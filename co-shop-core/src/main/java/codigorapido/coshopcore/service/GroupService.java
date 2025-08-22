@@ -3,6 +3,7 @@ package codigorapido.coshopcore.service;
 import codigorapido.coshopcore.entity.GroupEntity;
 import codigorapido.coshopcore.model.GroupCreate;
 import codigorapido.coshopcore.repository.GroupRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,7 @@ public class GroupService {
         return groupRepository.save(groupEntity);
     }
 
-
+    public Optional<GroupEntity> getGroupById(Long groupId) {
+        return groupRepository.findById(groupId);
+    }
 }

@@ -28,4 +28,21 @@ public class GroupWebService implements GroupsApi {
             .inviteCode("INVITE123"); // Placeholder for invite code logic
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<Group> getGroup(Long groupId) {
+        var optionalGroup = groupService.getGroupById(groupId);
+        if (optionalGroup.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            var groupEntity = optionalGroup.get();
+            var group = new Group()
+                .id(groupEntity.getId())
+                .name(groupEntity.getName())
+                .startDate(groupEntity.getStartDate())
+                .endDate(groupEntity.getEndDate())
+                .inviteCode("INVITE123"); // Placeholder for invite code logic
+            return new ResponseEntity<>(group, HttpStatus.OK);
+        }
+    }
 }

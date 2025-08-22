@@ -1,0 +1,34 @@
+import {inject, Injectable} from '@angular/core';
+import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import {GroupsService} from './groups.service';
+
+type GroupsState = {
+  userId: number;
+  groups: Group[];
+  loading: boolean;
+};
+
+const initialState: GroupsState = {userId: 1, groups: [], loading: false};
+
+@Injectable({providedIn: 'root'})
+export class GroupsStore extends signalStore(
+  withState(initialState),
+  withMethods((store) => {
+    const groupsService = inject(GroupsService);
+    return {
+      setUserId(userId: number) {
+        patchState(store, {userId: userId})
+      },
+      loadFromServer: async () => {
+        patchState(store, {loading: true});
+        try {
+          const data = await groupsService.listGroups();
+          patchState(store, {groups: data, loading: false});
+        } catch (e: any) {
+          patchState(store, {loading: false});
+        }
+      },
+    };
+  }),
+) {
+}

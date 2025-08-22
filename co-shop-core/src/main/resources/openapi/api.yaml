@@ -43,49 +43,49 @@ components:
       required: true
       schema:
         type: integer
-        format: int64
+        format:
     MemberIdParam:
       in: path
       name: memberId
       required: true
       schema:
         type: integer
-        format: int64
+        format:
     ProductIdParam:
       in: path
       name: productId
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format:
     ItemIdParam:
       in: path
       name: itemId
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format:
     ProposalIdParam:
       in: path
       name: proposalId
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format:
     CommitIdParam:
       in: path
       name: commitId
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int64
     RequestIdParam:
       in: path
       name: requestId
       required: true
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int64
   schemas:
     Error:
       type: object
@@ -158,11 +158,11 @@ components:
         - displayName
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         userId:
           type: string
           nullable: true
@@ -192,7 +192,7 @@ components:
       properties:
         id:
           type: string
-          format: uuid
+          format: int64
         name:
           type: string
           example: Bier 6er-Pack
@@ -270,14 +270,14 @@ components:
         - productId
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         plannedQty:
           type: number
           example: 12
@@ -299,8 +299,8 @@ components:
         - productId
       properties:
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         plannedQty:
           type: number
         unit:
@@ -332,17 +332,17 @@ components:
         - baseQty
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         proposerId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         baseQty:
           type: number
           example: 1
@@ -366,14 +366,14 @@ components:
         - baseQty
       properties:
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         proposerId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         baseQty:
           type: number
         perPerson:
@@ -403,17 +403,17 @@ components:
         - qtyCommitted
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         memberId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         itemId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         qtyCommitted:
           type: number
           example: 12
@@ -428,11 +428,11 @@ components:
         - qtyCommitted
       properties:
         memberId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         itemId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         qtyCommitted:
           type: number
     CommitUpdate:
@@ -450,17 +450,17 @@ components:
         - qtyRequested
       properties:
         id:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         memberId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         qtyRequested:
           type: number
           example: 1
@@ -478,11 +478,11 @@ components:
         - qtyRequested
       properties:
         memberId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         productId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         qtyRequested:
           type: number
         unitPreference:
@@ -498,8 +498,8 @@ components:
       type: object
       properties:
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         persons:
           type: integer
         days:
@@ -510,8 +510,8 @@ components:
             type: object
             properties:
               productId:
-                type: string
-                format: uuid
+                type: integer
+                format: int64
               name:
                 type: string
               demand:
@@ -530,16 +530,16 @@ components:
       type: object
       properties:
         groupId:
-          type: string
-          format: uuid
+          type: integer
+          format: int64
         totalsByMember:
           type: array
           items:
             type: object
             properties:
               memberId:
-                type: string
-                format: uuid
+                type: integer
+                format: int64
               displayName:
                 type: string
               amount:
@@ -550,11 +550,11 @@ components:
             type: object
             properties:
               fromMemberId:
-                type: string
-                format: uuid
+                type: integer
+                format: int64
               toMemberId:
-                type: string
-                format: uuid
+                type: integer
+                format: int64
               amount:
                 type: number
 paths:
@@ -1029,8 +1029,8 @@ paths:
         - in: query
           name: productId
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       responses:
         '200':
           description: Proposals
@@ -1121,8 +1121,8 @@ paths:
         - in: query
           name: itemId
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       responses:
         '200':
           description: Commits
@@ -1213,13 +1213,13 @@ paths:
         - in: query
           name: productId
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
         - in: query
           name: memberId
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
       responses:
         '200':
           description: Requests
@@ -1300,54 +1300,6 @@ paths:
         '204':
           description: Deleted
       operationId: deleteRequest
-  /groups/{groupId}/plan:
-    get:
-      tags:
-        - Compute
-      summary: Compute demand/rounding/remaining for the group
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
-        - in: query
-          name: persons
-          schema:
-            type: integer
-            minimum: 1
-        - in: query
-          name: days
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '200':
-          description: Plan result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PlanResult'
-      operationId: computePlan
-  /groups/{groupId}/settlement:
-    get:
-      tags:
-        - Compute
-      summary: Compute fair settlement/split for the group
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
-        - in: query
-          name: method
-          schema:
-            type: string
-            enum:
-              - equal
-              - weighted
-            default: weighted
-      responses:
-        '200':
-          description: Settlement result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SettlementResult'
-      operationId: computeSettlement
   /members/{memberId}/groups:
     get:
       tags:

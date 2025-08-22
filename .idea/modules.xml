@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/bernhackt.iml" filepath="$PROJECT_DIR$/.idea/bernhackt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/co-shop-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/co-shop-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/co-shop-ui/co-shop-ui.iml" filepath="$PROJECT_DIR$/co-shop-ui/co-shop-ui.iml" />
     </modules>
   </component>

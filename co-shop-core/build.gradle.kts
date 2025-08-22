@@ -43,6 +43,10 @@ dependencies {
 
 	// Springdoc für Boot 3 (MVC)
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// JPA + Postgres
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("org.postgresql:postgresql")
 }
 
 val openApiSpec = "$projectDir/src/main/resources/openapi/api.yaml"

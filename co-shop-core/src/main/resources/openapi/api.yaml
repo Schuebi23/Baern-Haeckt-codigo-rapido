@@ -112,9 +112,6 @@ components:
           format: int64
         name:
           type: string
-        currency:
-          type: string
-          example: CHF
         startDate:
           type: string
           format: date
@@ -136,9 +133,6 @@ components:
       properties:
         name:
           type: string
-        currency:
-          type: string
-          example: CHF
         startDate:
           type: string
           format: date
@@ -149,8 +143,6 @@ components:
       type: object
       properties:
         name:
-          type: string
-        currency:
           type: string
         startDate:
           type: string
@@ -176,26 +168,6 @@ components:
           nullable: true
         displayName:
           type: string
-        role:
-          type: string
-          enum:
-            - owner
-            - editor
-            - viewer
-          default: viewer
-        weights:
-          type: object
-          additionalProperties:
-            type: number
-          example:
-            alcohol: 1.4
-            coffee: 1.2
-        preferences:
-          type: object
-          additionalProperties: true
-          example:
-            milk: almond
-            vegan: true
         createdAt:
           type: string
           format: date-time
@@ -206,37 +178,11 @@ components:
       properties:
         displayName:
           type: string
-        role:
-          type: string
-          enum:
-            - owner
-            - editor
-            - viewer
-        weights:
-          type: object
-          additionalProperties:
-            type: number
-        preferences:
-          type: object
-          additionalProperties: true
     MemberUpdate:
       type: object
       properties:
         displayName:
           type: string
-        role:
-          type: string
-          enum:
-            - owner
-            - editor
-            - viewer
-        weights:
-          type: object
-          additionalProperties:
-            type: number
-        preferences:
-          type: object
-          additionalProperties: true
     Product:
       type: object
       required:
@@ -586,8 +532,6 @@ components:
         groupId:
           type: string
           format: uuid
-        currency:
-          type: string
         totalsByMember:
           type: array
           items:

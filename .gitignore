@@ -1,0 +1,67 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sonstige IDE-bezogene Dateien
+out/
+.idea_modules/
+atlassian-ide-plugin.xml
+*.swp
+*.bak
+*.tmp
+*.log
+
+### Angular / Node ###
+node_modules/
+dist/
+dist-ssr/
+coverage/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# Angular Umgebungsdateien
+/src/environments/*.ts
+
+### Spring Boot / Java ###
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle
+.gradle/
+build/
+!gradle-wrapper.jar
+
+# Spring Boot
+*.out
+
+# Allgemeine Java-Dateien
+*.class
+*.jar
+*.war
+*.ear
+
+### Betriebssystem ###
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~

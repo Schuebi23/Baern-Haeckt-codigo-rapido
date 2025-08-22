@@ -1,0 +1,1406 @@
+openapi: 3.0.3
+info:
+  title: Group Groceries API
+  version: 1.0.1
+  description: 'Mobile-first cooperative shopping API for group trips (e.g., ski huts).
+
+    Covers groups, members, products, items (products in a group), proposals (quantity
+    suggestions),
+
+    commits (who brings what), and requests (member wants how much). Includes compute
+    endpoints for
+
+    planning quantities and fair settlement.
+
+    '
+servers:
+  - url: https://api.example.com/v1
+    description: Production
+  - url: http://localhost:8080/v1
+    description: Local Dev
+tags:
+  - name: Auth
+  - name: Groups
+  - name: Members
+  - name: Products
+  - name: Items
+  - name: Proposals
+  - name: Commits
+  - name: Requests
+  - name: Compute
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    GroupIdParam:
+      in: path
+      name: groupId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    MemberIdParam:
+      in: path
+      name: memberId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ProductIdParam:
+      in: path
+      name: productId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ItemIdParam:
+      in: path
+      name: itemId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ProposalIdParam:
+      in: path
+      name: proposalId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    CommitIdParam:
+      in: path
+      name: commitId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    RequestIdParam:
+      in: path
+      name: requestId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+    Group:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        currency:
+          type: string
+          example: CHF
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        inviteCode:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    GroupCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        currency:
+          type: string
+          example: CHF
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    GroupUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        currency:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+    Member:
+      type: object
+      required:
+        - id
+        - groupId
+        - displayName
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          nullable: true
+        displayName:
+          type: string
+        role:
+          type: string
+          enum:
+            - owner
+            - editor
+            - viewer
+          default: viewer
+        weights:
+          type: object
+          additionalProperties:
+            type: number
+          example:
+            alcohol: 1.4
+            coffee: 1.2
+        preferences:
+          type: object
+          additionalProperties: true
+          example:
+            milk: almond
+            vegan: true
+        createdAt:
+          type: string
+          format: date-time
+    MemberCreate:
+      type: object
+      required:
+        - displayName
+      properties:
+        displayName:
+          type: string
+        role:
+          type: string
+          enum:
+            - owner
+            - editor
+            - viewer
+        weights:
+          type: object
+          additionalProperties:
+            type: number
+        preferences:
+          type: object
+          additionalProperties: true
+    MemberUpdate:
+      type: object
+      properties:
+        displayName:
+          type: string
+        role:
+          type: string
+          enum:
+            - owner
+            - editor
+            - viewer
+        weights:
+          type: object
+          additionalProperties:
+            type: number
+        preferences:
+          type: object
+          additionalProperties: true
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - unit
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Bier 6er-Pack
+        category:
+          type: string
+          example: Getränke
+        unit:
+          type: string
+          example: l
+        packSize:
+          type: number
+          example: 6
+        priceEstimate:
+          type: number
+          format: float
+          example: 9.9
+        isPersonal:
+          type: boolean
+          default: false
+        allergens:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+    ProductCreate:
+      type: object
+      required:
+        - name
+        - unit
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: string
+        packSize:
+          type: number
+        priceEstimate:
+          type: number
+          format: float
+        isPersonal:
+          type: boolean
+        allergens:
+          type: array
+          items:
+            type: string
+    ProductUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: string
+        packSize:
+          type: number
+        priceEstimate:
+          type: number
+          format: float
+        isPersonal:
+          type: boolean
+        allergens:
+          type: array
+          items:
+            type: string
+    Item:
+      type: object
+      required:
+        - id
+        - groupId
+        - productId
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        plannedQty:
+          type: number
+          example: 12
+        roundedQty:
+          type: number
+          example: 12
+        unit:
+          type: string
+        packSize:
+          type: number
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    ItemCreate:
+      type: object
+      required:
+        - productId
+      properties:
+        productId:
+          type: string
+          format: uuid
+        plannedQty:
+          type: number
+        unit:
+          type: string
+        packSize:
+          type: number
+        notes:
+          type: string
+    ItemUpdate:
+      type: object
+      properties:
+        plannedQty:
+          type: number
+        roundedQty:
+          type: number
+        unit:
+          type: string
+        packSize:
+          type: number
+        notes:
+          type: string
+    Proposal:
+      type: object
+      required:
+        - id
+        - groupId
+        - productId
+        - proposerId
+        - baseQty
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        proposerId:
+          type: string
+          format: uuid
+        baseQty:
+          type: number
+          example: 1
+        perPerson:
+          type: boolean
+          default: true
+        perDay:
+          type: boolean
+          default: true
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    ProposalCreate:
+      type: object
+      required:
+        - groupId
+        - productId
+        - proposerId
+        - baseQty
+      properties:
+        groupId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        proposerId:
+          type: string
+          format: uuid
+        baseQty:
+          type: number
+        perPerson:
+          type: boolean
+        perDay:
+          type: boolean
+        notes:
+          type: string
+    ProposalUpdate:
+      type: object
+      properties:
+        baseQty:
+          type: number
+        perPerson:
+          type: boolean
+        perDay:
+          type: boolean
+        notes:
+          type: string
+    Commit:
+      type: object
+      required:
+        - id
+        - groupId
+        - memberId
+        - itemId
+        - qtyCommitted
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        memberId:
+          type: string
+          format: uuid
+        itemId:
+          type: string
+          format: uuid
+        qtyCommitted:
+          type: number
+          example: 12
+        createdAt:
+          type: string
+          format: date-time
+    CommitCreate:
+      type: object
+      required:
+        - memberId
+        - itemId
+        - qtyCommitted
+      properties:
+        memberId:
+          type: string
+          format: uuid
+        itemId:
+          type: string
+          format: uuid
+        qtyCommitted:
+          type: number
+    CommitUpdate:
+      type: object
+      properties:
+        qtyCommitted:
+          type: number
+    Request:
+      type: object
+      required:
+        - id
+        - groupId
+        - memberId
+        - productId
+        - qtyRequested
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        memberId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        qtyRequested:
+          type: number
+          example: 1
+        unitPreference:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    RequestCreate:
+      type: object
+      required:
+        - memberId
+        - productId
+        - qtyRequested
+      properties:
+        memberId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        qtyRequested:
+          type: number
+        unitPreference:
+          type: string
+    RequestUpdate:
+      type: object
+      properties:
+        qtyRequested:
+          type: number
+        unitPreference:
+          type: string
+    PlanResult:
+      type: object
+      properties:
+        groupId:
+          type: string
+          format: uuid
+        persons:
+          type: integer
+        days:
+          type: integer
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                format: uuid
+              name:
+                type: string
+              demand:
+                type: number
+              rounded:
+                type: number
+              unit:
+                type: string
+              packSize:
+                type: number
+              committed:
+                type: number
+              remaining:
+                type: number
+    SettlementResult:
+      type: object
+      properties:
+        groupId:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        totalsByMember:
+          type: array
+          items:
+            type: object
+            properties:
+              memberId:
+                type: string
+                format: uuid
+              displayName:
+                type: string
+              amount:
+                type: number
+        transfers:
+          type: array
+          items:
+            type: object
+            properties:
+              fromMemberId:
+                type: string
+                format: uuid
+              toMemberId:
+                type: string
+                format: uuid
+              amount:
+                type: number
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                displayName:
+                  type: string
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: authRegister
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login and obtain JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+        '401':
+          description: Unauthorized
+      operationId: authLogin
+  /auth/refresh:
+    post:
+      tags:
+        - Auth
+      summary: Refresh access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '401':
+          description: Unauthorized
+      operationId: authRefresh
+  /groups:
+    get:
+      tags:
+        - Groups
+      summary: List groups
+      responses:
+        '200':
+          description: List of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+      operationId: listGroups
+    post:
+      tags:
+        - Groups
+      summary: Create group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCreate'
+      responses:
+        '201':
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+      operationId: createGroup
+  /groups/{groupId}:
+    get:
+      tags:
+        - Groups
+      summary: Get group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      responses:
+        '200':
+          description: Group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '404':
+          description: Not found
+      operationId: getGroup
+    patch:
+      tags:
+        - Groups
+      summary: Update group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+      operationId: updateGroup
+    delete:
+      tags:
+        - Groups
+      summary: Delete group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: deleteGroup
+  /groups/{groupId}/join:
+    post:
+      tags:
+        - Groups
+      summary: Join a group via invite code
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - inviteCode
+              properties:
+                inviteCode:
+                  type: string
+      responses:
+        '200':
+          description: Joined
+        '400':
+          description: Invalid invite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: joinGroup
+  /groups/{groupId}/members:
+    get:
+      tags:
+        - Members
+      summary: List members of a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      responses:
+        '200':
+          description: Members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+      operationId: listGroupMembers
+    post:
+      tags:
+        - Members
+      summary: Add member to group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberCreate'
+      responses:
+        '201':
+          description: Member created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+      operationId: addGroupMember
+  /groups/{groupId}/members/{memberId}:
+    get:
+      tags:
+        - Members
+      summary: Get member
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '200':
+          description: Member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '404':
+          description: Not found
+      operationId: getGroupMember
+    patch:
+      tags:
+        - Members
+      summary: Update member
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+      operationId: updateGroupMember
+    delete:
+      tags:
+        - Members
+      summary: Remove member
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: removeGroupMember
+  /products:
+    get:
+      tags:
+        - Products
+      summary: List products (catalog)
+      responses:
+        '200':
+          description: Products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+      operationId: listProducts
+    post:
+      tags:
+        - Products
+      summary: Create product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      operationId: createProduct
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Get product
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      responses:
+        '200':
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not found
+      operationId: getProduct
+    patch:
+      tags:
+        - Products
+      summary: Update product
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+      operationId: updateProduct
+    delete:
+      tags:
+        - Products
+      summary: Delete product
+      parameters:
+        - $ref: '#/components/parameters/ProductIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: deleteProduct
+  /groups/{groupId}/items:
+    get:
+      tags:
+        - Items
+      summary: List items (products in the group)
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      responses:
+        '200':
+          description: Items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+      operationId: listGroupItems
+    post:
+      tags:
+        - Items
+      summary: Add product to group as an item
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+      operationId: addGroupItem
+  /groups/{groupId}/items/{itemId}:
+    get:
+      tags:
+        - Items
+      summary: Get item
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ItemIdParam'
+      responses:
+        '200':
+          description: Item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: Not found
+      operationId: getGroupItem
+    patch:
+      tags:
+        - Items
+      summary: Update item
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ItemIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+      operationId: updateGroupItem
+    delete:
+      tags:
+        - Items
+      summary: Remove item from group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ItemIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: removeGroupItem
+  /groups/{groupId}/proposals:
+    get:
+      tags:
+        - Proposals
+      summary: List proposals in a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - in: query
+          name: productId
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Proposals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Proposal'
+      operationId: listProposals
+    post:
+      tags:
+        - Proposals
+      summary: Create a proposal
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proposal'
+      operationId: createProposal
+  /groups/{groupId}/proposals/{proposalId}:
+    get:
+      tags:
+        - Proposals
+      summary: Get proposal
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ProposalIdParam'
+      responses:
+        '200':
+          description: Proposal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proposal'
+        '404':
+          description: Not found
+      operationId: getProposal
+    patch:
+      tags:
+        - Proposals
+      summary: Update proposal
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ProposalIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proposal'
+      operationId: updateProposal
+    delete:
+      tags:
+        - Proposals
+      summary: Delete proposal
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/ProposalIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: deleteProposal
+  /groups/{groupId}/commits:
+    get:
+      tags:
+        - Commits
+      summary: List commits in a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - in: query
+          name: itemId
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Commits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Commit'
+      operationId: listCommits
+    post:
+      tags:
+        - Commits
+      summary: Create a commit (member brings quantity of an item)
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commit'
+      operationId: createCommit
+  /groups/{groupId}/commits/{commitId}:
+    get:
+      tags:
+        - Commits
+      summary: Get commit
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/CommitIdParam'
+      responses:
+        '200':
+          description: Commit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commit'
+        '404':
+          description: Not found
+      operationId: getCommit
+    patch:
+      tags:
+        - Commits
+      summary: Update commit
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/CommitIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commit'
+      operationId: updateCommit
+    delete:
+      tags:
+        - Commits
+      summary: Delete commit
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/CommitIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: deleteCommit
+  /groups/{groupId}/requests:
+    get:
+      tags:
+        - Requests
+      summary: List requests in a group (member wants how much of a product)
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - in: query
+          name: productId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: memberId
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request'
+      operationId: listRequests
+    post:
+      tags:
+        - Requests
+      summary: Create a request
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+      operationId: createRequest
+  /groups/{groupId}/requests/{requestId}:
+    get:
+      tags:
+        - Requests
+      summary: Get request
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '200':
+          description: Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '404':
+          description: Not found
+      operationId: getRequest
+    patch:
+      tags:
+        - Requests
+      summary: Update request
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/RequestIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+      operationId: updateRequest
+    delete:
+      tags:
+        - Requests
+      summary: Delete request
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - $ref: '#/components/parameters/RequestIdParam'
+      responses:
+        '204':
+          description: Deleted
+      operationId: deleteRequest
+  /groups/{groupId}/plan:
+    get:
+      tags:
+        - Compute
+      summary: Compute demand/rounding/remaining for the group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - in: query
+          name: persons
+          schema:
+            type: integer
+            minimum: 1
+        - in: query
+          name: days
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Plan result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanResult'
+      operationId: computePlan
+  /groups/{groupId}/settlement:
+    get:
+      tags:
+        - Compute
+      summary: Compute fair settlement/split for the group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+        - in: query
+          name: method
+          schema:
+            type: string
+            enum:
+              - equal
+              - weighted
+            default: weighted
+      responses:
+        '200':
+          description: Settlement result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementResult'
+      operationId: computeSettlement

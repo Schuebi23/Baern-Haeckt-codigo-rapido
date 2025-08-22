@@ -43,35 +43,35 @@ components:
       required: true
       schema:
         type: integer
-        format:
+        format: int64
     MemberIdParam:
       in: path
       name: memberId
       required: true
       schema:
         type: integer
-        format:
+        format: int64
     ProductIdParam:
       in: path
       name: productId
       required: true
       schema:
         type: integer
-        format:
+        format: int64
     ItemIdParam:
       in: path
       name: itemId
       required: true
       schema:
         type: integer
-        format:
+        format: int64
     ProposalIdParam:
       in: path
       name: proposalId
       required: true
       schema:
         type: integer
-        format:
+        format: int64
     CommitIdParam:
       in: path
       name: commitId

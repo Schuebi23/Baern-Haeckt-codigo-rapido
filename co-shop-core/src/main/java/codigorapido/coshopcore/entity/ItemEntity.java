@@ -37,5 +37,9 @@ public class ItemEntity {
     @ManyToOne
     @JoinColumn(name = "fk_product")
     private ProductEntity product;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_group", nullable = false)
+    private GroupEntity group;
 }
 

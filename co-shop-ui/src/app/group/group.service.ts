@@ -18,12 +18,6 @@ export class GroupService {
     );
   }
 
-  public async createItem(item: Item): Promise<Item> {
-    return await firstValueFrom(
-        this.httpClient.post<Item>(`${this.baseUrl}/items`, item, {}),
-    );
-  }
-
   async loadGroup(groupId: number): Promise<Group> {
     return await firstValueFrom(
         this.httpClient.get<Group>(`${this.baseUrl}/groups/${groupId}`, {}),

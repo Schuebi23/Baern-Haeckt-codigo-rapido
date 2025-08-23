@@ -56,12 +56,14 @@ body {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s;
+  text-decoration: none;
 }
 
 .add-button:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* Items Container */
 .items-container {
   background-color: #f2f2f7;
   min-height: 400px;
@@ -96,10 +98,23 @@ body {
   flex: 1;
 }
 
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .item-name {
   font-size: 18px;
   font-weight: 500;
   color: #1c1c1e;
+}
+
+.item-description {
+  font-size: 14px;
+  color: #8e8e93;
+  font-weight: 400;
+  line-height: 1.2;
 }
 
 .expand-indicator {
@@ -233,60 +248,6 @@ body {
 
 .commit-icon::before {
   content: "🛒";
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-
-  .frame {
-    max-width: 100%;
-  }
-
-  .header {
-    padding: 16px;
-  }
-
-  .header h1 {
-    font-size: 20px;
-  }
-
-  .item {
-    padding: 14px 16px;
-  }
-
-  .item-name {
-    font-size: 16px;
-  }
-
-  .action-button {
-    width: 32px;
-    height: 32px;
-  }
-
-  .request-item {
-    padding: 12px 16px 12px 32px;
-  }
-
-  .request-info {
-    gap: 8px;
-  }
-
-  .request-member {
-    min-width: 60px;
-    font-size: 13px;
-  }
-
-  .request-quantity {
-    font-size: 13px;
-  }
-
-  .for-everyone-tag {
-    font-size: 11px;
-    padding: 1px 6px;
-  }
 }
 
 /* Empty state */
@@ -450,7 +411,7 @@ body {
   pointer-events: none;
 }
 
-/* Form Actions */
+/* Button Styles */
 .form-actions {
   display: flex;
   gap: 12px;
@@ -498,7 +459,7 @@ body {
 }
 
 .btn-settlement {
-  background: linear-gradient(to right, #1e3c72, #2a9df4); /* dunkelblau → hellblau */
+  background: linear-gradient(to right, #1e3c72, #2a9df4);
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -525,9 +486,67 @@ body {
   align-items: center;
 }
 
-
-/* Responsive form */
+/* Responsive Styles */
 @media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .frame {
+    max-width: 100%;
+  }
+
+  .header {
+    padding: 16px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .item {
+    padding: 14px 16px;
+  }
+
+  .item-name {
+    font-size: 16px;
+  }
+
+  .item-info {
+    gap: 2px;
+  }
+
+  .item-description {
+    font-size: 12px;
+  }
+
+  .action-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .request-item {
+    padding: 12px 16px 12px 32px;
+  }
+
+  .request-info {
+    gap: 8px;
+  }
+
+  .request-member {
+    min-width: 60px;
+    font-size: 13px;
+  }
+
+  .request-quantity {
+    font-size: 13px;
+  }
+
+  .for-everyone-tag {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+
   .modal-content {
     width: 95%;
     margin: 20px;

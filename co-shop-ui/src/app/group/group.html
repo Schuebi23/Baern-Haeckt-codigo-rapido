@@ -18,7 +18,12 @@
         <!-- Main item row -->
         <div class="item" (click)="toggleItemExpanded(item.id)">
           <div class="item-left">
-            <div class="item-name">{{ item.name }}</div>
+            <div class="item-info">
+              <div class="item-name">{{ item.name }}</div>
+              @if (item.description) {
+                <div class="item-description">{{ item.description }}</div>
+              }
+            </div>
             <div class="expand-indicator" [class.expanded]="isItemExpanded(item.id)">
               @if (item.requests.length > 0) {
                 <span class="chevron">›</span>
@@ -69,7 +74,7 @@
   <div class="modal-overlay" (click)="closeCommitModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>Artikel hinzufügen</h2>
+        <h2>Ich bringe mit</h2>
         <button class="close-button" (click)="closeCommitModal()">×</button>
       </div>
 

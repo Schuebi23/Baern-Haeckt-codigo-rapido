@@ -800,22 +800,6 @@ paths:
                 $ref: '#/components/schemas/Item'
       operationId: addGroupItem
   /items/{itemId}:
-    get:
-      tags:
-        - Items
-      summary: Get item
-      parameters:
-        - $ref: '#/components/parameters/ItemIdParam'
-      responses:
-        '200':
-          description: Item
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Item'
-        '404':
-          description: Not found
-      operationId: getGroupItem
     patch:
       tags:
         - Items

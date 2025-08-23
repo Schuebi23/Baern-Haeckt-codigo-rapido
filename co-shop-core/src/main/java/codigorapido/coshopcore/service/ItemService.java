@@ -4,6 +4,7 @@ import codigorapido.coshopcore.entity.ItemEntity;
 import codigorapido.coshopcore.model.Item;
 import codigorapido.coshopcore.model.ItemCreate;
 import codigorapido.coshopcore.model.ItemUpdate;
+import codigorapido.coshopcore.repository.GroupRepository;
 import codigorapido.coshopcore.repository.ItemRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +16,14 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    private final GroupService groupService;
+    private final GroupRepository groupRepository;
     private final ProductService productService;
     private final CommitService commitService;
     private final ProposalService proposalService;
     private final RequestService requestService;
 
     public List<Item> listGroupItems(Long groupId) {
-        var group = groupService.getGroupById(groupId).orElseThrow();
-
+        var group = groupRepository.findById(groupId).orElseThrow();
         var items = itemRepository.findByGroup(group);
 
         return items.stream().map(itemEntity -> {
@@ -44,7 +44,7 @@ public class ItemService {
     }
 
     public Item addGroupItem(Long groupId, ItemCreate itemCreate) {
-        var group = groupService.getGroupById(groupId).orElseThrow();
+        var group = groupRepository.findById(groupId).orElseThrow();
         var product = productService.findById(itemCreate.getProductId()).orElse(null);
 
         var itemEntity = ItemEntity.builder()

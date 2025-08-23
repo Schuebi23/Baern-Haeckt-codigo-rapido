@@ -1,7 +1,9 @@
 package codigorapido.coshopcore.service;
 
 import codigorapido.coshopcore.entity.converter.GroupEntityToDtoConverter;
+import codigorapido.coshopcore.entity.converter.MemberEntityToDtoConverter;
 import codigorapido.coshopcore.model.Group;
+import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.repository.GroupRepository;
 import codigorapido.coshopcore.repository.MemberRepository;
 import java.util.List;
@@ -17,11 +19,17 @@ public class MemberService {
     private final GroupRepository groupRepository;
 
     private final GroupEntityToDtoConverter groupEntityToDtoConverter = new GroupEntityToDtoConverter();
+    private final MemberEntityToDtoConverter memberEntityToDtoConverter = new MemberEntityToDtoConverter();
 
     public List<Group> getGroupsForMember(Long memberId) {
         var member = memberRepository.findById(memberId).orElseThrow();
         var groups = groupRepository.findAllByMembers(Set.of(member));
         return groupEntityToDtoConverter.convert(groups);
+    }
+
+    public Member getMemberById(Long memberId) {
+        var member = memberRepository.findById(memberId).orElseThrow();
+        return memberEntityToDtoConverter.convert(member);
     }
 
 }

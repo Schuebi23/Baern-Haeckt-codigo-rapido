@@ -2,6 +2,7 @@ package codigorapido.coshopcore.web;
 
 import codigorapido.coshopcore.api.MembersApi;
 import codigorapido.coshopcore.model.Group;
+import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.service.MemberService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,11 @@ public class MemberWebService implements MembersApi {
             .toList();
 
         return ResponseEntity.ok(groups);
+    }
+
+    @Override
+    public ResponseEntity<Member> getMemberDetail(Long memberId) {
+        var member = memberService.getMemberById(memberId);
+        return ResponseEntity.ok(member);
     }
 }

@@ -886,3 +886,18 @@ paths:
                 items:
                   $ref: '#/components/schemas/Group'
       operationId: listMemberGroups
+  /members/{memberId}:
+    get:
+      tags:
+        - Members
+      summary: Get member details
+      parameters:
+        - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '200':
+          description: Member Detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+      operationId: getMemberDetail

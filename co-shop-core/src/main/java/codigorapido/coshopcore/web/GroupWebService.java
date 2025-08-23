@@ -1,6 +1,5 @@
 package codigorapido.coshopcore.web;
 
-
 import codigorapido.coshopcore.api.GroupsApi;
 import codigorapido.coshopcore.model.Group;
 import codigorapido.coshopcore.model.GroupCreate;

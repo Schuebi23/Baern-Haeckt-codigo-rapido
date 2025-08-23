@@ -267,7 +267,6 @@ components:
       required:
         - id
         - groupId
-        - productId
       properties:
         id:
           type: integer
@@ -278,21 +277,22 @@ components:
         productId:
           type: integer
           format: int64
-        plannedQty:
-          type: number
-          example: 12
-        roundedQty:
-          type: number
-          example: 12
         unit:
           type: string
-        packSize:
-          type: number
-        notes:
+        description:
           type: string
-        createdAt:
-          type: string
-          format: date-time
+        requests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Request'
+        proposals:
+            type: array
+            items:
+              $ref: '#/components/schemas/Proposal'
+        commits:
+            type: array
+            items:
+              $ref: '#/components/schemas/Commit'
     ItemCreate:
       type: object
       required:
@@ -502,169 +502,7 @@ components:
           type: number
         unitPreference:
           type: string
-    PlanResult:
-      type: object
-      properties:
-        groupId:
-          type: integer
-          format: int64
-        persons:
-          type: integer
-        days:
-          type: integer
-        items:
-          type: array
-          items:
-            type: object
-            properties:
-              productId:
-                type: integer
-                format: int64
-              name:
-                type: string
-              demand:
-                type: number
-              rounded:
-                type: number
-              unit:
-                type: string
-              packSize:
-                type: number
-              committed:
-                type: number
-              remaining:
-                type: number
-    SettlementResult:
-      type: object
-      properties:
-        groupId:
-          type: integer
-          format: int64
-        totalsByMember:
-          type: array
-          items:
-            type: object
-            properties:
-              memberId:
-                type: integer
-                format: int64
-              displayName:
-                type: string
-              amount:
-                type: number
-        transfers:
-          type: array
-          items:
-            type: object
-            properties:
-              fromMemberId:
-                type: integer
-                format: int64
-              toMemberId:
-                type: integer
-                format: int64
-              amount:
-                type: number
 paths:
-  /auth/register:
-    post:
-      tags:
-        - Auth
-      summary: Register a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-                  minLength: 8
-                displayName:
-                  type: string
-      responses:
-        '201':
-          description: Created
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: authRegister
-  /auth/login:
-    post:
-      tags:
-        - Auth
-      summary: Login and obtain JWT
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-      responses:
-        '200':
-          description: Token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-                  refreshToken:
-                    type: string
-        '401':
-          description: Unauthorized
-      operationId: authLogin
-  /auth/refresh:
-    post:
-      tags:
-        - Auth
-      summary: Refresh access token
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - refreshToken
-              properties:
-                refreshToken:
-                  type: string
-      responses:
-        '200':
-          description: Token
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-        '401':
-          description: Unauthorized
-      operationId: authRefresh
   /groups:
     get:
       tags:
@@ -944,7 +782,7 @@ paths:
     get:
       tags:
         - Items
-      summary: List items (products in the group)
+      summary: List items, requests, proposals, and commits in a group
       parameters:
         - $ref: '#/components/parameters/GroupIdParam'
       responses:
@@ -977,13 +815,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Item'
       operationId: addGroupItem
-  /groups/{groupId}/items/{itemId}:
+  /items/{itemId}:
     get:
       tags:
         - Items
       summary: Get item
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ItemIdParam'
       responses:
         '200':
@@ -1000,7 +837,6 @@ paths:
         - Items
       summary: Update item
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ItemIdParam'
       requestBody:
         required: true
@@ -1021,34 +857,12 @@ paths:
         - Items
       summary: Remove item from group
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ItemIdParam'
       responses:
         '204':
           description: Deleted
       operationId: removeGroupItem
-  /groups/{groupId}/proposals:
-    get:
-      tags:
-        - Proposals
-      summary: List proposals in a group
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
-        - in: query
-          name: productId
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Proposals
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Proposal'
-      operationId: listProposals
+  /proposals:
     post:
       tags:
         - Proposals
@@ -1069,13 +883,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Proposal'
       operationId: createProposal
-  /groups/{groupId}/proposals/{proposalId}:
+  /proposals/{proposalId}:
     get:
       tags:
         - Proposals
       summary: Get proposal
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ProposalIdParam'
       responses:
         '200':
@@ -1092,7 +905,6 @@ paths:
         - Proposals
       summary: Update proposal
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ProposalIdParam'
       requestBody:
         required: true
@@ -1113,7 +925,6 @@ paths:
         - Proposals
       summary: Delete proposal
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/ProposalIdParam'
       responses:
         '204':

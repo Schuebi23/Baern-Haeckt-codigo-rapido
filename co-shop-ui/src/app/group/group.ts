@@ -8,6 +8,13 @@ export type Item = {
   product?: Product;
 }
 
+export type ItemCreate = {
+  name: string;
+  productId?: number;
+  unit: Unit;
+  description?: string;
+}
+
 export enum Unit {
   PIECE = 'PIECE',
   KG = 'KG',

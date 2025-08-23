@@ -1,0 +1,31 @@
+
+<div class="overlay">
+  <div class="popup">
+    <h2>Details eingeben</h2>
+
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" type="text" [(ngModel)]="form().name" placeholder="z. B. Wasser">
+    </div>
+
+    <div class="form-group">
+      <label for="unit">Unit</label>
+      <input id="unit" type="text" [(ngModel)]="form().unit" placeholder="z. B. L oder Stück">
+    </div>
+
+    <div class="form-group">
+      <label for="menge">Menge</label>
+      <input id="menge" type="number" [(ngModel)]="form().menge" placeholder="z. B. 2">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Beschreibung</label>
+      <textarea id="description" rows="2" [(ngModel)]="form().description" placeholder="Optionale Beschreibung..."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-confirm" (click)="onConfirm()">Bestätigen</button>
+      <button class="btn btn-cancel" (click)="onCancel()">Abbrechen</button>
+    </div>
+  </div>
+</div>

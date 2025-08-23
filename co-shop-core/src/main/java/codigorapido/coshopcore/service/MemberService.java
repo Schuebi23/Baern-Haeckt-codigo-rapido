@@ -1,11 +1,11 @@
 package codigorapido.coshopcore.service;
 
-import codigorapido.coshopcore.entity.GroupEntity;
 import codigorapido.coshopcore.entity.converter.GroupEntityToDtoConverter;
 import codigorapido.coshopcore.model.Group;
 import codigorapido.coshopcore.repository.GroupRepository;
 import codigorapido.coshopcore.repository.MemberRepository;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class MemberService {
 
     public List<Group> getGroupsForMember(Long memberId) {
         var member = memberRepository.findById(memberId).orElseThrow();
-        var groups = groupRepository.findByMembers(member);
+        var groups = groupRepository.findAllByMembers(Set.of(member));
         return groupEntityToDtoConverter.convert(groups);
     }
 

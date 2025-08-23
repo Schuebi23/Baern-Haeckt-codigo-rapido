@@ -32,6 +32,9 @@ public class GroupEntity {
     @Column(length = 60, nullable = false)
     private String name;
 
+    @Column(length = 70, nullable = false, unique = true)
+    private String inviteCode;
+
     private LocalDate startDate;
     private LocalDate endDate;
 

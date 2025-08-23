@@ -11,6 +11,7 @@ public class GroupEntityToDtoConverter implements Converter<GroupEntity, Group> 
         return new Group()
             .id(groupEntity.getId())
             .name(groupEntity.getName())
+            .inviteCode(groupEntity.getInviteCode())
             .startDate(groupEntity.getStartDate())
             .endDate(groupEntity.getEndDate());
     }

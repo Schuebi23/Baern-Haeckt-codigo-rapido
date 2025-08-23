@@ -3,11 +3,11 @@
 SET search_path TO CO_SHOP;
 
 -- Insert 4 Groups
-INSERT INTO GROUPS (NAME, START_DATE, END_DATE)
-VALUES ('Family Smith', '2024-01-01', '2024-12-31'),
-       ('Roommates Downtown', '2024-02-15', '2024-08-31'),
-       ('Office Lunch Club', '2024-03-01', '2024-11-30'),
-       ('Neighborhood Co-op', '2024-01-10', NULL);
+INSERT INTO GROUPS (NAME, START_DATE, END_DATE, INVITE_CODE)
+VALUES ('Family Smith', '2024-01-01', '2024-12-31', 'FAM1234'),
+       ('Roommates Downtown', '2024-02-15', '2024-08-31', 'ROOM567'),
+       ('Office Lunch Club', '2024-03-01', '2024-11-30', 'OFF8901'),
+       ('Neighborhood Co-op', '2024-01-10', NULL, 'COOP234');
 
 -- Insert 10 Members
 INSERT INTO MEMBERS (DISPLAY_NAME)

@@ -118,12 +118,6 @@ components:
           format: date
         inviteCode:
           type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     GroupCreate:
       type: object
       required:
@@ -131,6 +125,11 @@ components:
       properties:
         name:
           type: string
+        members:
+          type: array
+          items:
+            type: integer
+            format: int64
         startDate:
           type: string
           format: date
@@ -567,13 +566,11 @@ paths:
         '204':
           description: Deleted
       operationId: deleteGroup
-  /groups/{groupId}/join:
+  /groups/join:
     post:
       tags:
         - Groups
       summary: Join a group via invite code
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
       requestBody:
         required: true
         content:
@@ -582,9 +579,13 @@ paths:
               type: object
               required:
                 - inviteCode
+                - memberId
               properties:
                 inviteCode:
                   type: string
+                memberId:
+                  type: integer
+                  format: int64
       responses:
         '200':
           description: Joined

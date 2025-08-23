@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 
 import {Commit, Group, Item, ItemRequest, Member} from './group';
@@ -18,7 +18,7 @@ export class GroupService {
     );
   }
 
-  async createItem(item: Item): Promise<Item> {
+  public async createItem(item: Item): Promise<Item> {
     return await firstValueFrom(
         this.httpClient.post<Item>(`${this.baseUrl}/items`, item, {}),
     );
@@ -75,6 +75,13 @@ export class GroupService {
           'qtyRequested': newAmount,
           'forEveryone': forEveryone,
         }, {}),
+    );
+  }
+
+  async getSettlement(groupId: number): Promise<string[]> {
+    const headers = new HttpHeaders({ Accept: 'application/json' });
+    return await firstValueFrom(
+      this.httpClient.get<string[]>(`${this.baseUrl}/groups/${groupId}/settlement`, { headers })
     );
   }
 }

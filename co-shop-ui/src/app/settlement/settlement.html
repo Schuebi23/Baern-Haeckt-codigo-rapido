@@ -1,0 +1,8 @@
+@if (settlements && settlements.length > 0) {
+  <div class="settlement">
+    <h2>Schulden begleichen</h2>
+    @for (settlement of settlements; track settlements) {
+      <p>{{ settlement }}</p>
+    }
+  </div>
+}

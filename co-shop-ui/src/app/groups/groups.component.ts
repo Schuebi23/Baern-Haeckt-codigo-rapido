@@ -27,7 +27,7 @@ export class GroupsComponent {
   }
 
   joinGroup(code: string) {
-    console.log('Code:', code);
+    this.store.joinGroup(code);
     this.closeModal();
   }
 

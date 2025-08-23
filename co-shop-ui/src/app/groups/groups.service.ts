@@ -18,9 +18,16 @@ export class GroupsService {
     );
   }
 
-  async createGroup(name: string): Promise<void> {
+  async createGroup(name: string, members: number[]): Promise<void> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     await firstValueFrom(
-      this.http.post<void>(`${this.baseUrl}/groups`, { name }, { headers }));
+      this.http.post<void>(`${this.baseUrl}/groups`, { name, members }, { headers }));
   }
+
+  async joinGroup(inviteCode: string, memberId: number | null): Promise<void> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    await firstValueFrom(
+      this.http.post<void>(`${this.baseUrl}/groups/join`, { inviteCode, memberId }, { headers }));
+  }
+
 }

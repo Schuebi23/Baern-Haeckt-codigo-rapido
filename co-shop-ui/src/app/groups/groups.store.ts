@@ -32,10 +32,15 @@ export class GroupsStore extends signalStore(
         }
       },
       createGroup: async (name: string) => {
-        await groupsService.createGroup(name);
-        await groupsService.listGroups();
+        const currentMemberId: number | null = localStorageService.getItem('memberId');
+        await groupsService.createGroup(name, currentMemberId === null ? [] : [currentMemberId]);
+        patchState(store, {groups: await groupsService.listGroups()});
+      },
+      joinGroup: async (inviteCode: string) => {
+        const currentMemberId: number | null = localStorageService.getItem('memberId');
+        await groupsService.joinGroup(inviteCode, currentMemberId);
+        patchState(store, {groups: await groupsService.listGroups()});
       }
     };
   }),
-) {
-}
+) {}

@@ -11,11 +11,15 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @NoArgsConstructor(force = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Setter
+@Getter
 @AllArgsConstructor
 @Builder
 @Entity

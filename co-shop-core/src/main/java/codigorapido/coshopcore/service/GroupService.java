@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +40,13 @@ public class GroupService {
         return entity.map(toDtoConverter::convert);
     }
 
+    @Transactional
     public void addMemberToGroup(JoinGroupRequest joinGroupRequest) {
-        var group = groupRepository.findByInviteCode(joinGroupRequest.getInviteCode()).orElseThrow();
+        var group = groupRepository.findByInviteCodeWithMembers(joinGroupRequest.getInviteCode()).orElseThrow();
         var member = memberRepository.findById(joinGroupRequest.getMemberId()).orElseThrow();
 
         group.getMembers().add(member);
-        groupRepository.save(group);
+        member.getGroups().add(group);
     }
 
     public List<Member> listGroupMembers(Long groupId) {

@@ -14,19 +14,22 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = "members")
 @Entity
 @Table(name = "groups")
-@Data
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
-@Builder
 public class GroupEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(length = 60, nullable = false)
@@ -38,6 +41,7 @@ public class GroupEntity {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable(
         name = "group_members",

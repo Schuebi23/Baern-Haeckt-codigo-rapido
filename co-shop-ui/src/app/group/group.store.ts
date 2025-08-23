@@ -2,8 +2,8 @@ import {inject, Injectable} from '@angular/core';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {GroupService} from './group.service';
 
-import {Item, Member} from './group';
-import {LocalStorageService} from '../general/local-storage-service';
+import {Commit, Item, ItemRequest, Member, RequestCommitForDisplay} from './group';
+import {LocalStorageService} from '../general/local-storage.service';
 
 type GroupState = {
   items: Item[];
@@ -23,6 +23,14 @@ const findMemberById = (member: Member[], memberId: number): Member | undefined 
   return member.find(m => m.id === memberId);
 };
 
+const findCommitByItemAndMember = (item: Item, memberId: number): Commit | undefined => {
+  return item.commits.find(c => c.memberId === memberId);
+};
+
+const findRequestByItemAndMember = (item: Item, memberId: number): ItemRequest | undefined => {
+  return item.requests.find(r => r.memberId === memberId);
+};
+
 @Injectable({providedIn: 'root'})
 export class GroupStore extends signalStore(
     withState(initialState),
@@ -31,7 +39,7 @@ export class GroupStore extends signalStore(
       const localStorageService = inject(LocalStorageService);
 
       return {
-        loadInitialData: async (groupId: number) => {
+        loadInitialData: async (groupId: number): Promise<void> => {
           const memberId = localStorageService.getItem<number>('memberId');
 
           if (memberId) {
@@ -41,12 +49,9 @@ export class GroupStore extends signalStore(
             patchState(store, {group, memberId, members, items});
           }
         },
-        loadItems: async () => {
+        loadItems: async (): Promise<void> => {
           const items = await groupService.loadItems(store.group().id);
           patchState(store, {items});
-        },
-        getItem: (itemId: number) => {
-          return findItemById(store.items(), itemId);
         },
         getTotalRequestsForItem: (itemId: number): number => {
           const item = findItemById(store.items(), itemId);
@@ -54,13 +59,125 @@ export class GroupStore extends signalStore(
         },
         getTotalCommitsForItem: (itemId: number): number => {
           const item = findItemById(store.items(), itemId);
-          return item ? item.commits.reduce((sum, request) => sum + request.quantity, 0) : 0;
+          return item ? item.commits.reduce((sum, request) => sum + request.qtyCommitted, 0) : 0;
         },
-        getMemberNameById(memberId: number) {
+        getMemberNameById: (memberId: number): string => {
           const member = findMemberById(store.members(), memberId);
           return member ? member.displayName : '';
+        },
+        getCommitsForItemAndMember: (itemId: number, memberId: number): string => {
+
+          const item = findItemById(store.items(), itemId);
+          if (item) {
+            const commit = findCommitByItemAndMember(item, memberId);
+            if (commit) {
+              return `${commit.qtyCommitted}`;
+            }
+            return '0';
+          }
+          return 'Nan';
+        },
+        getRequestsForItemAndMember: (itemId: number, memberId: number): string => {
+          const item = findItemById(store.items(), itemId);
+          if (item) {
+            const commit = findRequestByItemAndMember(item, memberId);
+            if (commit) {
+              return `${commit.qtyRequested}`;
+            }
+            return '0';
+          }
+          return 'Nan';
+        },
+        createOrUpdateCommit: async (itemId: number, commitAmount: number): Promise<void> => {
+          const currentItems = store.items();
+          const targetItem = findItemById(currentItems, itemId);
+
+          if (!targetItem) {
+            console.error(`Item with ID ${itemId} not found`);
+            return;
+          }
+
+          const existingCommit = targetItem.commits.find(c => c.memberId === store.memberId());
+
+          if (existingCommit && existingCommit.id) {
+            const updatedCommit = await groupService.updateCommit(
+                existingCommit.id,
+                existingCommit.qtyCommitted + commitAmount,
+            );
+
+            const updatedItems = currentItems.map(item => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  commits: item.commits.map(commit =>
+                      commit.id === existingCommit.id ? updatedCommit : commit,
+                  ),
+                };
+              }
+              return item;
+            });
+
+            patchState(store, {items: updatedItems});
+          } else {
+            const createdCommit = await groupService.createCommit(itemId, commitAmount, store.memberId());
+
+            const updatedItems = currentItems.map(item => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  commits: [...item.commits, createdCommit],
+                };
+              }
+              return item;
+            });
+            patchState(store, {items: updatedItems});
+          }
+        },
+        getRequestAndCommitsCombined: (itemId: number): RequestCommitForDisplay[] => {
+          const item = findItemById(store.items(), itemId);
+          if (!item) return [];
+
+          const memberDataMap = new Map<number, RequestCommitForDisplay>();
+
+          item.requests.forEach(request => {
+            const existing = memberDataMap.get(request.memberId);
+            if (existing) {
+              existing.qtyRequested += request.qtyRequested;
+              existing.forEveryone = existing.forEveryone || request.forEveryone;
+            } else {
+              memberDataMap.set(request.memberId, {
+                memberId: request.memberId,
+                qtyRequested: request.qtyRequested,
+                qtyCommitted: 0,
+                forEveryone: request.forEveryone,
+                price: 0,
+                commited: false,
+              });
+            }
+          });
+
+          item.commits.forEach(commit => {
+            const existing = memberDataMap.get(commit.memberId);
+            if (existing) {
+              existing.qtyCommitted += commit.qtyCommitted;
+              existing.price = commit.price || 0; // Use the commit's price
+              existing.commited = commit.commited;
+            } else {
+              memberDataMap.set(commit.memberId, {
+                memberId: commit.memberId,
+                qtyRequested: 0,
+                qtyCommitted: commit.qtyCommitted,
+                forEveryone: false,
+                price: commit.price || 0,
+                commited: commit.commited,
+              });
+            }
+          });
+
+          return Array.from(memberDataMap.values());
         },
       };
     }),
 ) {
+
 }

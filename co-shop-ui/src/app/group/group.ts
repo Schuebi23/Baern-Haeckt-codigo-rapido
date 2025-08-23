@@ -16,6 +16,7 @@ export enum Unit {
 
 export type ItemRequest = {
   id?: number;
+  itemId: number;
   memberId: number;
   qtyRequested: number;
   forEveryone: boolean;
@@ -24,7 +25,8 @@ export type ItemRequest = {
 export type Commit = {
   id?: number;
   memberId: number;
-  quantity: number;
+  itemId: number;
+  qtyCommitted: number;
   price?: number;
   commited: boolean;
 }
@@ -45,4 +47,13 @@ export type Group = {
   name: string;
   startDate: Date;
   endDate: Date;
+}
+
+export type RequestCommitForDisplay = {
+  memberId: number;
+  qtyRequested: number;
+  qtyCommitted: number;
+  forEveryone: boolean;
+  price: number;
+  commited: boolean;
 }

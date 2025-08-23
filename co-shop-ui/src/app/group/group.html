@@ -29,24 +29,25 @@
             <button class="action-button request-button" (click)="$event.stopPropagation()">
               <span class="star-icon"></span>
             </button>
-            <button class="action-button commit-button" (click)="$event.stopPropagation()">
+            <button class="action-button commit-button" (click)="$event.stopPropagation(); openCommitModal(item)">
               <span class="commit-icon"></span>
             </button>
             <div class="quantity-display">
-              {{ store.getTotalCommitsForItem(item.id) }} / {{ store.getTotalRequestsForItem(item.id) }} {{ item.unit }}
+              {{ store.getTotalCommitsForItem(item.id) }} / {{ store.getTotalRequestsForItem(item.id) }}
             </div>
           </div>
         </div>
 
         <!-- Collapsible requests section -->
-        @if (isItemExpanded(item.id)) {
+        @if (isItemExpanded(item.id) && item.requests && item.requests.length > 0) {
           <div class="requests-section">
-            @for (request of item.requests; track request.id) {
+            @for (displayItem of store.getRequestAndCommitsCombined(item.id); track displayItem.memberId) {
               <div class="request-item">
                 <div class="request-info">
-                  <span class="request-member"> {{ store.getMemberNameById(request.memberId) }} </span>
-                  <span class="request-quantity">{{ request.qtyRequested }} {{ item.unit }}</span>
-                  @if (request.forEveryone) {
+                  <span class="request-member"> {{ store.getMemberNameById(displayItem.memberId) }} </span>
+                  <span class="request-quantity"> {{ displayItem.qtyCommitted }}
+                    / {{ displayItem.qtyRequested }} {{ item.unit }}</span>
+                  @if (displayItem.forEveryone) {
                     <span class="for-everyone-tag">Für alle</span>
                   }
                 </div>
@@ -58,3 +59,54 @@
     }
   </div>
 </div>
+
+<!-- Commit Modal -->
+@if (isModalOpen && selectedItem) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Artikel hinzufügen</h2>
+        <button class="close-button" (click)="closeModal()">×</button>
+      </div>
+
+      <form class="commit-form" (ngSubmit)="confirmCommit()">
+        <div class="form-field">
+          <label>Artikel</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              [value]="selectedItem.name"
+              readonly
+              class="form-input readonly"
+            >
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Anzahl</label>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              min="1"
+              [value]="commitAmount"
+              (input)="onAmountChange($event)"
+              class="form-input"
+              placeholder="1"
+              required
+            >
+            <span class="input-suffix">{{ selectedItem.unit }}</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">
+            Abbrechen
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Hinzufügen
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

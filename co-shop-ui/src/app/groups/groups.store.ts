@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {GroupsService} from './groups.service';
-import {LocalStorageService} from '../general/local-storage-service';
+import {LocalStorageService} from '../general/local-storage.service';
 
 type GroupsState = {
   userId: number;

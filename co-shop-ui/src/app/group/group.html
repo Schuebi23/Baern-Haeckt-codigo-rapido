@@ -1,4 +1,3 @@
-<div class="frame-label">Frame</div>
 <div class="frame">
   <header class="header">
     <h1>Einkaufsübersicht</h1>
@@ -18,20 +17,14 @@
       <div class="item">
         <div class="item-name">{{ item.name }}</div>
         <div class="item-actions">
-          <button
-            class="action-button request-button"
-
-          >
+          <button class="action-button request-button">
             <span class="star-icon"></span>
           </button>
-          <button
-            class="action-button commit-button"
-
-          >
+          <button class="action-button commit-button">
             <span class="commit-icon"></span>
           </button>
           <div class="quantity-display">
-            {{ getQuantityDisplay(item) }}
+            {{ store.getTotalCommitsForItem(item.id) }} / {{ store.getTotalRequestsForItem(item.id) }}
           </div>
         </div>
       </div>

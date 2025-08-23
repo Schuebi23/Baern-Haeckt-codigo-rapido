@@ -1,5 +1,5 @@
 export type Item = {
-  id?: number;
+  id: number;
   name?: string;
   description?: string;
   unit: Unit;
@@ -17,7 +17,7 @@ export enum Unit {
 export type ItemRequest = {
   id?: number;
   memberId: number;
-  quantity: number;
+  qtyRequested: number;
   forEveryone: boolean;
 }
 

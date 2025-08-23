@@ -10,17 +10,17 @@ VALUES ('Family Smith', '2024-01-01', '2024-12-31'),
        ('Neighborhood Co-op', '2024-01-10', NULL);
 
 -- Insert 10 Members
-INSERT INTO MEMBERS (CLIENT_KEY, DISPLAY_NAME, CREATED_AT)
-VALUES ('550e8400-e29b-41d4-a716-446655440001', 'Sarah Martinez', '2024-01-05 10:30:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440002', 'Mike Johnson', '2024-01-08 14:15:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440003', 'Lisa Chen', '2024-01-12 09:20:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440004', 'David Rodriguez', '2024-01-15 16:45:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440005', 'Emma Thompson', '2024-01-18 11:30:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440006', 'James Wilson', '2024-01-22 13:10:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440007', 'Anna Kowalski', '2024-01-25 08:45:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440008', 'Tom Anderson', '2024-01-28 15:30:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440009', 'Sophie Dubois', '2024-02-01 09:15:00+00'),
-       ('550e8400-e29b-41d4-a716-446655440010', 'Carlos Fernandez', '2024-02-05 12:00:00+00');
+INSERT INTO MEMBERS (DISPLAY_NAME)
+VALUES ( 'Sarah Martinez'),
+       ( 'Mike Johnson'),
+       ( 'Lisa Chen'),
+       ( 'David Rodriguez'),
+       ( 'Emma Thompson'),
+       ( 'James Wilson'),
+       ( 'Anna Kowalski'),
+       ( 'Tom Anderson'),
+       ( 'Sophie Dubois'),
+       ( 'Carlos Fernandez');
 
 -- Insert Group Members (randomly distributed, members can be in multiple groups)
 INSERT INTO GROUP_MEMBERS (GROUP_ID, MEMBER_ID)

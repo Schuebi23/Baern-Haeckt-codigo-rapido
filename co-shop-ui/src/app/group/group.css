@@ -15,7 +15,7 @@ body {
 .frame {
   max-width: 400px;
   margin: 0 auto;
-  background-color: #1c1c1e;
+  background-color: #f2f2f7;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -496,6 +496,35 @@ body {
 .btn:active {
   transform: translateY(0) scale(0.98);
 }
+
+.btn-settlement {
+  background: linear-gradient(to right, #1e3c72, #2a9df4); /* dunkelblau → hellblau */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.btn-settlement:hover {
+  opacity: 0.9;
+}
+
+.btn-settlement:active {
+  transform: scale(0.97);
+}
+
+.center-div {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 /* Responsive form */
 @media (max-width: 480px) {

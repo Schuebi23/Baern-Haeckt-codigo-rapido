@@ -1,8 +1,11 @@
-@if (settlements && settlements.length > 0) {
-  <div class="settlement">
+<div class="settlement">
+  @if (store.settlements() && store.settlements().length > 0) {
+
     <h2>Schulden begleichen</h2>
-    @for (settlement of settlements; track settlements) {
+    @for (settlement of store.settlements(); track settlement) {
       <p>{{ settlement }}</p>
     }
-  </div>
-}
+  } @else {
+    <p>Die Einkaufsliste ist noch nicht abgeschlossen.</p>
+  }
+</div>

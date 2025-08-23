@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {GroupService} from '../group/group.service';
+import {GroupStore} from '../group/group.store';
 
 @Component({
   selector: 'app-settlement',
@@ -10,19 +11,14 @@ import {GroupService} from '../group/group.service';
 })
 export class SettlementComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private groupService = inject(GroupService);
-
-  public settlements: string[] = [];
-
+  readonly store = inject(GroupStore);
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const groupId = +params['groupId'];
 
       if (groupId) {
-        this.groupService.getSettlement(groupId).then(res => {
-          this.settlements = res;
-        });
+        this.store.loadSettlements(groupId);
       }
     });
   }

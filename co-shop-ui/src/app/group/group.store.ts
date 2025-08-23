@@ -10,10 +10,11 @@ type GroupState = {
   members: Member[];
   group: Group;
   memberId: number;
+  settlements: string[];
 }
 const EMPTY_GROUP: Group = {id: -1, name: '', startDate: new Date(), endDate: new Date()} as const;
 
-const initialState: GroupState = {items: [], members: [], group: EMPTY_GROUP, memberId: -1};
+const initialState: GroupState = {items: [], members: [], group: EMPTY_GROUP, memberId: -1, settlements: []};
 
 const findItemById = (items: Item[], itemId: number): Item | undefined => {
   return items.find(i => i.id === itemId);
@@ -39,6 +40,10 @@ export class GroupStore extends signalStore(
       const localStorageService = inject(LocalStorageService);
 
       return {
+        loadSettlements: async (groupId: number): Promise<void> => {
+          const settlements = await groupService.getSettlement(groupId);
+          patchState(store, {settlements});
+        },
         loadInitialData: async (groupId: number): Promise<void> => {
           const memberId = localStorageService.getItem<number>('memberId');
 

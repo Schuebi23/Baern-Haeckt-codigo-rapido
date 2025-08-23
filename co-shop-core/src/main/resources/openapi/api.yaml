@@ -1206,33 +1206,7 @@ paths:
         '204':
           description: Deleted
       operationId: deleteCommit
-  /groups/{groupId}/requests:
-    get:
-      tags:
-        - Requests
-      summary: List requests in a group (member wants how much of a product)
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
-        - in: query
-          name: productId
-          schema:
-            type: integer
-            format: int64
-        - in: query
-          name: memberId
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Requests
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Request'
-      operationId: listRequests
+  /requests:
     post:
       tags:
         - Requests
@@ -1253,13 +1227,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Request'
       operationId: createRequest
-  /groups/{groupId}/requests/{requestId}:
+  /requests/{requestId}:
     get:
       tags:
         - Requests
       summary: Get request
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/RequestIdParam'
       responses:
         '200':
@@ -1276,7 +1249,6 @@ paths:
         - Requests
       summary: Update request
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/RequestIdParam'
       requestBody:
         required: true
@@ -1297,7 +1269,6 @@ paths:
         - Requests
       summary: Delete request
       parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
         - $ref: '#/components/parameters/RequestIdParam'
       responses:
         '204':

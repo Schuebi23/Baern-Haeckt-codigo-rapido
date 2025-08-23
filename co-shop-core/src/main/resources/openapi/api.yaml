@@ -272,9 +272,8 @@ components:
         groupId:
           type: integer
           format: int64
-        productId:
-          type: integer
-          format: int64
+        name:
+          type: string
         unit:
           type: string
         description:
@@ -296,28 +295,22 @@ components:
       required:
         - productId
       properties:
+        name:
+          type: string
         productId:
           type: integer
           format: int64
-        plannedQty:
-          type: number
         unit:
           type: string
-        packSize:
-          type: number
         description:
           type: string
     ItemUpdate:
       type: object
       properties:
-        plannedQty:
-          type: number
-        roundedQty:
-          type: number
+        name:
+          type: string
         unit:
           type: string
-        packSize:
-          type: number
         description:
           type: string
     Proposal:
@@ -326,7 +319,6 @@ components:
         - id
         - groupId
         - itemId
-        - proposerId
         - baseQty
       properties:
         id:
@@ -338,11 +330,8 @@ components:
         itemId:
           type: integer
           format: int64
-        proposerId:
-          type: integer
-          format: int64
         baseQty:
-          type: number
+          type: integer
           example: 1
         perPerson:
           type: boolean
@@ -360,7 +349,6 @@ components:
       required:
         - groupId
         - itemId
-        - proposerId
         - baseQty
       properties:
         groupId:
@@ -369,11 +357,8 @@ components:
         itemId:
           type: integer
           format: int64
-        proposerId:
-          type: integer
-          format: int64
         baseQty:
-          type: number
+          type: integer
         perPerson:
           type: boolean
         perDay:
@@ -384,7 +369,7 @@ components:
       type: object
       properties:
         baseQty:
-          type: number
+          type: integer
         perPerson:
           type: boolean
         perDay:
@@ -782,7 +767,7 @@ paths:
         '204':
           description: Deleted
       operationId: deleteProduct
-  /groups/{groupId}/items:
+  /items/{groupId}:
     get:
       tags:
         - Items
@@ -871,8 +856,6 @@ paths:
       tags:
         - Proposals
       summary: Create a proposal
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
       requestBody:
         required: true
         content:

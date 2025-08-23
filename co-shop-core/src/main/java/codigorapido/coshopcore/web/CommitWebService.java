@@ -7,9 +7,9 @@ import codigorapido.coshopcore.model.CommitUpdate;
 import codigorapido.coshopcore.service.CommitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
-@Service
+@RestController
 @RequiredArgsConstructor
 public class CommitWebService implements CommitsApi {
 

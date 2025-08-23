@@ -1,0 +1,27 @@
+<div class="search-box">
+  <h3>Produkt suchen oder neuen Namen eingeben</h3>
+
+  <input
+    type="text"
+    placeholder="z.B. Milch"
+    [formControl]="searchControl"
+    class="input-field"
+  />
+
+  @let searchResults = searchResults$ | async;
+  @for (product of searchResults; track $index) {
+    <div class="result" (click)="addItem(product.name)">
+      {{ product.name }}
+    </div>
+  }
+
+  @if (searchResults?.length === 0 && searchControl.value) {
+    <div
+      class="create-option"
+      (click)="addItem(searchControl.value!!)"
+    >
+      Neues Produkt erstellen: "<strong>{{ searchControl.value }}</strong>"
+    </div>
+  }
+
+</div>

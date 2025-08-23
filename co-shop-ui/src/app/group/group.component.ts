@@ -1,13 +1,15 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {GroupStore} from './group.store';
-import {ActivatedRoute} from '@angular/router';
-import {Item, Unit} from './group';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-group',
   templateUrl: './group.html',
   styleUrls: ['./group.css'],
   providers: [GroupStore],
+  imports: [
+    RouterLink
+  ]
 })
 export class GroupComponent implements OnInit {
 
@@ -28,17 +30,4 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  addItem(): void {
-    console.log('Add item clicked');
-
-    const newItem: Item = {
-      id: Date.now(),
-      name: 'Neuer Artikel',
-      unit: Unit.PIECE,
-      requests: [],
-      commits: [],
-    };
-
-    this.store.addItem(newItem);
-  }
 }

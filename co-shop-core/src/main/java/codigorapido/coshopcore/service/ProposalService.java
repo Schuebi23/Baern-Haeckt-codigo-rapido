@@ -2,6 +2,8 @@ package codigorapido.coshopcore.service;
 
 import codigorapido.coshopcore.entity.ItemEntity;
 import codigorapido.coshopcore.entity.ProposalEntity;
+import codigorapido.coshopcore.entity.converter.ProposalCreateToEntityConverter;
+import codigorapido.coshopcore.entity.converter.ProposalEntityToDtoConverter;
 import codigorapido.coshopcore.model.Proposal;
 import codigorapido.coshopcore.model.ProposalCreate;
 import codigorapido.coshopcore.model.ProposalUpdate;
@@ -16,27 +18,14 @@ import org.springframework.stereotype.Service;
 public class ProposalService {
 
     private final ProposalRepository proposalRepository;
-    private final ItemRepository itemRepository;
+    private final ProposalCreateToEntityConverter toEntityConverter;
+
+    private final ProposalEntityToDtoConverter toDtoConverter = new ProposalEntityToDtoConverter();
 
     public Proposal createProposal(ProposalCreate proposalCreate) {
-        var item = itemRepository.findById(proposalCreate.getItemId())
-            .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + proposalCreate.getItemId()));
-
-        var proposalEntity = ProposalEntity.builder()
-            .item(item)
-            .perPerson(proposalCreate.getPerPerson())
-            .perDay(proposalCreate.getPerDay())
-            .quantity(proposalCreate.getBaseQty())
-            .build();
-
+        var proposalEntity = toEntityConverter.convert(proposalCreate);
         var savedEntity = proposalRepository.save(proposalEntity);
-
-        return new Proposal()
-            .id(savedEntity.getId())
-            .itemId(proposalEntity.getItem().getId())
-            .perPerson(proposalEntity.isPerPerson())
-            .perDay(proposalEntity.isPerDay())
-            .baseQty(proposalEntity.getQuantity());
+        return toDtoConverter.convert(savedEntity);
     }
 
     public Proposal updateProposal(Long proposalId, ProposalUpdate proposalUpdate) {
@@ -49,28 +38,17 @@ public class ProposalService {
 
         var savedEntity = proposalRepository.save(proposalEntity);
 
-        return new Proposal()
-            .id(savedEntity.getId())
-            .itemId(proposalEntity.getItem().getId())
-            .perPerson(proposalEntity.isPerPerson())
-            .perDay(proposalEntity.isPerDay())
-            .baseQty(proposalEntity.getQuantity());
+        return toDtoConverter.convert(savedEntity);
+    }
+
+    public List<Proposal> findProposalsByItem(ItemEntity itemEntity) {
+        var proposals = proposalRepository.findAllByItem(itemEntity);
+        return toDtoConverter.convert(proposals);
     }
 
     public void deleteProposal(Long proposalId) {
         proposalRepository.deleteById(proposalId);
     }
 
-    public List<Proposal> findProposalsByItem(ItemEntity itemEntity) {
-        var proposals = proposalRepository.findAllByItem(itemEntity);
-
-        return proposals.stream().map(proposalEntity -> new Proposal()
-            .id(proposalEntity.getId())
-            .itemId(proposalEntity.getItem().getId())
-            .perPerson(proposalEntity.isPerPerson())
-            .perDay(proposalEntity.isPerDay())
-            .baseQty(proposalEntity.getQuantity())
-        ).toList();
-    }
 
 }

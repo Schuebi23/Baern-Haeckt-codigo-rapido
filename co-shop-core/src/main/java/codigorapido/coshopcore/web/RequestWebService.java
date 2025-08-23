@@ -17,35 +17,19 @@ public class RequestWebService implements RequestsApi {
 
     @Override
     public ResponseEntity<Request> createRequest(Long groupId, RequestCreate requestCreate) {
-        var requestEntity = requestService.create(requestCreate);
-
-        return ResponseEntity.ok(toDto(requestEntity));
+        var request = requestService.create(requestCreate);
+        return ResponseEntity.ok(request);
     }
 
     @Override
-    public ResponseEntity<Request> getRequest(Long requestId) {
-        var requestEntity = requestService.getRequest(requestId);
-
-        return ResponseEntity.ok(toDto(requestEntity));
+    public ResponseEntity<Request> updateRequest(Long requestId, codigorapido.coshopcore.model.RequestUpdate requestUpdate) {
+        var request = requestService.updateRequest(requestId, requestUpdate);
+        return ResponseEntity.ok(request);
     }
 
     @Override
     public ResponseEntity<Void> deleteRequest(Long requestId) {
         requestService.deleteRequest(requestId);
         return ResponseEntity.noContent().build();
-    }
-
-    @Override
-    public ResponseEntity<Request> updateRequest(Long requestId, codigorapido.coshopcore.model.RequestUpdate requestUpdate) {
-        var request = requestService.updateRequest(requestId, requestUpdate);
-        return ResponseEntity.ok(toDto(request));
-    }
-
-    private Request toDto(RequestEntity entity) {
-        return new Request()
-                .id(entity.getId())
-                .itemId(entity.getItem().getId())
-                .qtyRequested(entity.getQuantity())
-                .memberId(entity.getMember().getId());
     }
 }

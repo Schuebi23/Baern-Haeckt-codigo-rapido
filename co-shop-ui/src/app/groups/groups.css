@@ -88,7 +88,6 @@
 
 /* Empty State */
 .group-list:empty::after {
-  content: "Keine Gruppen vorhanden.\nErstellen Sie eine neue Gruppe oder treten Sie einer bei.";
   display: block;
   text-align: center;
   color: #8e8e93;

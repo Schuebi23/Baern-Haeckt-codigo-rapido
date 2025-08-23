@@ -31,6 +31,9 @@
   }
 
   <div class="group-list">
+    @if (store.groups().length == 0) {
+      "Keine Gruppen vorhanden. Erstellen Sie eine neue Gruppe oder treten Sie einer bei."
+    }
     @for (group of store.groups(); track $index) {
       <div class="group-item" (click)="selectGroup(group.id)">
         <div>{{ group.name }}</div>

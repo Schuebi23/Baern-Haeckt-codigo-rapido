@@ -2,6 +2,8 @@ package codigorapido.coshopcore.service;
 
 import codigorapido.coshopcore.entity.CommitEntity;
 import codigorapido.coshopcore.entity.ItemEntity;
+import codigorapido.coshopcore.entity.converter.CommitCreateToEntityConverter;
+import codigorapido.coshopcore.entity.converter.CommitEntityToDtoConverter;
 import codigorapido.coshopcore.model.Commit;
 import codigorapido.coshopcore.model.CommitCreate;
 import codigorapido.coshopcore.model.CommitUpdate;
@@ -18,26 +20,17 @@ import org.springframework.stereotype.Service;
 public class CommitService {
 
     private final CommitRepository commitRepository;
-    private final ItemRepository itemRepository;
-    private final MemberRepository memberRepository;
+    private final CommitCreateToEntityConverter toEntityConverter;
 
-    public CommitEntity addCommitToGroup(CommitCreate commitCreate) {
-        var item = itemRepository.findById(commitCreate.getItemId())
-                .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + commitCreate.getItemId()));
-        var member = memberRepository.findById(commitCreate.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + commitCreate.getMemberId()));
+    private final CommitEntityToDtoConverter toDtoConverter = new CommitEntityToDtoConverter();
 
-        var commitEntity = new CommitEntity();
-        commitEntity.setItem(item);
-        commitEntity.setMember(member);
-        commitEntity.setQuantity(commitCreate.getQtyCommitted());
-        commitEntity.setPrice(BigDecimal.valueOf(commitCreate.getPrice()));
-        commitEntity.setCommitted(commitCreate.getCommited());
-
-        return commitRepository.save(commitEntity);
+    public Commit addCommitToGroup(CommitCreate commitCreate) {
+        var commitEntity = toEntityConverter.convert(commitCreate);
+        var savedEntity = commitRepository.save(commitEntity);
+        return toDtoConverter.convert(savedEntity);
     }
 
-    public CommitEntity updateCommit(Long commitId, CommitUpdate commitUpdate) {
+    public Commit updateCommit(Long commitId, CommitUpdate commitUpdate) {
         var commitEntity = commitRepository.findById(commitId)
                 .orElseThrow(() -> new IllegalArgumentException("Commit not found with id: " + commitId));
 
@@ -45,7 +38,9 @@ public class CommitService {
         commitEntity.setPrice(BigDecimal.valueOf(commitUpdate.getPrice()));
         commitEntity.setCommitted(commitUpdate.getCommited());
 
-        return commitRepository.save(commitEntity);
+        var savedEntity = commitRepository.save(commitEntity);
+
+        return toDtoConverter.convert(savedEntity);
     }
 
     public void deleteCommit(Long commitId) {
@@ -54,12 +49,6 @@ public class CommitService {
 
     public List<Commit> findCommitsByItem(ItemEntity item) {
         var commitEntities = commitRepository.findAllByItem(item);
-
-        return commitEntities.stream().map(commitEntity -> new Commit()
-                .id(commitEntity.getId())
-                .itemId(commitEntity.getItem().getId())
-                .memberId(commitEntity.getMember().getId())
-                .qtyCommitted(commitEntity.getQuantity())
-        ).toList();
+        return toDtoConverter.convert(commitEntities);
     }
 }

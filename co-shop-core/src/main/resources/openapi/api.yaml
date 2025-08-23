@@ -396,9 +396,12 @@ components:
         qtyCommitted:
           type: integer
           example: 12
-        createdAt:
-          type: string
-          format: date-time
+        price:
+          type: number
+          format: float
+        commited:
+          type: boolean
+          default: false
     CommitCreate:
       type: object
       required:

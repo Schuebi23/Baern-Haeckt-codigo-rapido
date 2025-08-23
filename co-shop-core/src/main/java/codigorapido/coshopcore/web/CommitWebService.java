@@ -17,27 +17,13 @@ public class CommitWebService implements CommitsApi {
 
     @Override
     public ResponseEntity<Commit> createCommit(CommitCreate commitCreate) {
-        var commitEntity = commitService.addCommitToGroup(commitCreate);
-
-        var commit = new Commit()
-            .id(commitEntity.getId())
-            .itemId(commitEntity.getItem().getId())
-            .memberId(commitEntity.getMember().getId())
-            .qtyCommitted(commitEntity.getQuantity());
-
+        var commit = commitService.addCommitToGroup(commitCreate);
         return ResponseEntity.ok(commit);
     }
 
     @Override
     public ResponseEntity<Commit> updateCommit(Long commitId, CommitUpdate commitUpdate) {
-        var commitEntity = commitService.updateCommit(commitId, commitUpdate);
-
-        var commit = new Commit()
-            .id(commitEntity.getId())
-            .itemId(commitEntity.getItem().getId())
-            .memberId(commitEntity.getMember().getId())
-            .qtyCommitted(commitEntity.getQuantity());
-
+        var commit = commitService.updateCommit(commitId, commitUpdate);
         return ResponseEntity.ok(commit);
     }
 

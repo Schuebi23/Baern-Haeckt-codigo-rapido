@@ -51,7 +51,6 @@ public class GroupService {
 
     public List<Member> listGroupMembers(Long groupId) {
         var group = groupRepository.findById(groupId).orElseThrow();
-        var members = memberRepository.findAllByGroups(Set.of(group));
-        return memberToDtoConverter.convert(members);
+        return memberToDtoConverter.convert(group.getMembers());
     }
 }

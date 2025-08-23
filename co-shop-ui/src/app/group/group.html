@@ -1,0 +1,40 @@
+<div class="frame-label">Frame</div>
+<div class="frame">
+  <header class="header">
+    <h1>Einkaufsübersicht</h1>
+    <button class="add-button" (click)="addItem()">+</button>
+  </header>
+
+  <div class="items-container">
+    <!-- Empty state -->
+    @if (store.items().length === 0) {
+      <div class="empty-state">
+        <p>Keine Artikel gefunden.<br>Fügen Sie Ihren ersten Artikel hinzu!</p>
+      </div>
+    }
+
+    <!-- Items list -->
+    @for (item of store.items(); track item.id) {
+      <div class="item">
+        <div class="item-name">{{ item.name }}</div>
+        <div class="item-actions">
+          <button
+            class="action-button request-button"
+
+          >
+            <span class="star-icon"></span>
+          </button>
+          <button
+            class="action-button commit-button"
+
+          >
+            <span class="commit-icon"></span>
+          </button>
+          <div class="quantity-display">
+            {{ getQuantityDisplay(item) }}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

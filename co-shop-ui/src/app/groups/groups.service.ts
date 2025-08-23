@@ -21,7 +21,6 @@ export class GroupsService {
   async createGroup(name: string): Promise<void> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     await firstValueFrom(
-      this.http.post<void>(`${this.baseUrl}/groups`, { name }, { headers })
-    );
+      this.http.post<void>(`${this.baseUrl}/groups`, { name }, { headers }));
   }
 }

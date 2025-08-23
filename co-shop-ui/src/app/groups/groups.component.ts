@@ -35,6 +35,6 @@ export class GroupsComponent {
   }
 
   selectGroup(groupId: number) {
-    this.router.navigate(['groups', groupId]);
+    this.router.navigate(['group', groupId]);
   }
 }

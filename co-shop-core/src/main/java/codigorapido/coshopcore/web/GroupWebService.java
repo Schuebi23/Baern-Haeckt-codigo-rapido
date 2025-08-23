@@ -7,6 +7,7 @@ import codigorapido.coshopcore.model.GroupCreate;
 import codigorapido.coshopcore.model.JoinGroupRequest;
 import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.service.GroupService;
+import codigorapido.coshopcore.service.SettlementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GroupWebService implements GroupsApi {
 
     private final GroupService groupService;
+    private final SettlementService settlementService;
 
     @Override
     public ResponseEntity<Group> createGroup(GroupCreate groupCreate) {
@@ -46,5 +48,11 @@ public class GroupWebService implements GroupsApi {
     public ResponseEntity<List<Member>> listGroupMembers(Long groupId) {
         var members = groupService.listGroupMembers(groupId);
         return new ResponseEntity<>(members, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<String>> computeGroupSettlement(Long groupId) {
+        var settlements = settlementService.computeGroupSettlement(groupId);
+        return new ResponseEntity<>(settlements, HttpStatus.OK);
     }
 }

@@ -12,7 +12,6 @@ import codigorapido.coshopcore.repository.GroupRepository;
 import codigorapido.coshopcore.repository.MemberRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

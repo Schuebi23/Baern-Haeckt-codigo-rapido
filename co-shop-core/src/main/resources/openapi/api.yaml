@@ -517,6 +517,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/Member'
       operationId: listGroupMembers
+  /groups/{groupId}/settlement:
+    get:
+      tags:
+        - Groups
+      summary: Compute fair settlement for a group
+      parameters:
+        - $ref: '#/components/parameters/GroupIdParam'
+      responses:
+        '200':
+          description: Settlement
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      operationId: computeGroupSettlement
   /groups/join:
     post:
       tags:

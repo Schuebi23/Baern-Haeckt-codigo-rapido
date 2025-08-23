@@ -68,6 +68,7 @@ export class GroupComponent implements OnInit {
     this.isCommitModalOpen = false;
     this.selectedItem = undefined;
     this.commitAmount = 1;
+    this.price = 0.0;
   }
 
   confirmCommit(): void {
@@ -89,6 +90,7 @@ export class GroupComponent implements OnInit {
     this.isRequestModalOpen = false;
     this.selectedItem = undefined;
     this.requestAmount = 1;
+    this.forEveryone = false;
   }
 
   confirmRequest(): void {

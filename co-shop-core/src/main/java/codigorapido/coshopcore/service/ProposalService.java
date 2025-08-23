@@ -1,11 +1,13 @@
 package codigorapido.coshopcore.service;
 
+import codigorapido.coshopcore.entity.ItemEntity;
 import codigorapido.coshopcore.entity.ProposalEntity;
 import codigorapido.coshopcore.model.Proposal;
 import codigorapido.coshopcore.model.ProposalCreate;
 import codigorapido.coshopcore.model.ProposalUpdate;
 import codigorapido.coshopcore.repository.ItemRepository;
 import codigorapido.coshopcore.repository.ProposalRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,16 @@ public class ProposalService {
         proposalRepository.deleteById(proposalId);
     }
 
+    public List<Proposal> findProposalsByItem(ItemEntity itemEntity) {
+        var proposals = proposalRepository.findAllByItem(itemEntity);
+
+        return proposals.stream().map(proposalEntity -> new Proposal()
+            .id(proposalEntity.getId())
+            .itemId(proposalEntity.getItem().getId())
+            .perPerson(proposalEntity.isPerPerson())
+            .perDay(proposalEntity.isPerDay())
+            .baseQty(proposalEntity.getQuantity())
+        ).toList();
+    }
 
 }

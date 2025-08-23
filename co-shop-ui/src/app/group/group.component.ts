@@ -97,4 +97,12 @@ export class GroupComponent implements OnInit {
       this.closeRequestModal();
     }
   }
+
+  filterPersonalCommits(filter: boolean){
+    if (filter) {
+      this.store.filterPersonalItems();
+    } else {
+      this.store.loadItems();
+    }
+  }
 }

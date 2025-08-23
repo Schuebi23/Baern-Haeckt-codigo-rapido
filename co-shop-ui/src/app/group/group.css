@@ -637,3 +637,20 @@ body {
   font-weight: bold;
   font-size: 14px;
 }
+
+.personal-list-filter-container {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 0 1rem;
+  background-color: #dbe2ea;
+}
+
+.personal-list-filter-container label {
+  font-size: 19.5px;
+}
+
+#personal-commit-filter {
+  transform: scale(1.5);
+}

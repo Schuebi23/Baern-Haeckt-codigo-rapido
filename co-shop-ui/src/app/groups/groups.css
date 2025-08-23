@@ -9,23 +9,6 @@
   margin-bottom: 1.5rem;
 }
 
-.btn {
-  flex: 1 1 auto;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-}
-
-.btn.create {
-  background-color: #16a34a; /* green */
-}
-
-.btn.join {
-  background-color: #3b82f6; /* blue */
-}
-
 .group-list {
   display: flex;
   flex-direction: column;

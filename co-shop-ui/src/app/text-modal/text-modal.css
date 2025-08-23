@@ -60,11 +60,3 @@
   cursor: pointer;
   font-size: 14px;
 }
-
-.btn.join {
-  background-color: #3478f6;
-}
-
-.btn.cancel {
-  background-color: #f44336;
-}

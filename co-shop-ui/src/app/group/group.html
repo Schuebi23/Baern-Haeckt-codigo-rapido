@@ -4,6 +4,11 @@
     <a class="add-button" [routerLink]="'add-item'">+</a>
   </header>
 
+  <div class="personal-list-filter-container">
+    <input #filterCheckbox id="personal-commit-filter" type="checkbox" (change)="filterPersonalCommits(filterCheckbox.checked)" />
+    <label for="personal-commit-filter">Mein Einkauf</label>
+  </div>
+
   <div class="items-container">
     <!-- Empty state -->
     @if (store.items().length === 0) {
@@ -192,4 +197,3 @@
     </div>
   </div>
 }
-

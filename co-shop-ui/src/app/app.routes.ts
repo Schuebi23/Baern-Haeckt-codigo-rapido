@@ -9,5 +9,5 @@ export const routes: Routes = [
   {path: 'groups', component: GroupsComponent},
   {path: 'group/:groupId', component: GroupComponent},
   {path: 'group/:groupId/add-item', component: AddItem},
-  {path: 'group/:groupId/settlement', component: SettlementComponent}
+  {path: 'group/:groupId/settlement', component: SettlementComponent},
 ];

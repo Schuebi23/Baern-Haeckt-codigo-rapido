@@ -1,7 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {GroupService} from './group.service';
-
 import {Commit, Item, ItemRequest, Member, RequestCommitForDisplay} from './group';
 import {LocalStorageService} from '../general/local-storage.service';
 
@@ -57,6 +56,12 @@ export class GroupStore extends signalStore(
         loadItems: async (): Promise<void> => {
           const items = await groupService.loadItems(store.group().id);
           patchState(store, {items});
+        },
+        filterPersonalItems: () => {
+          const filteredItems = store.items().filter(item => {
+            return item.commits.some(commit => commit.memberId === store.memberId());
+          });
+          patchState(store, {items: filteredItems});
         },
         getTotalRequestsForItem: (itemId: number): number => {
           const item = findItemById(store.items(), itemId);
@@ -245,6 +250,4 @@ export class GroupStore extends signalStore(
         },
       };
     }),
-) {
-
-}
+) {}

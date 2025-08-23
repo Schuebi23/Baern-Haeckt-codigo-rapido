@@ -1,0 +1,18 @@
+<div class="modal-overlay">
+  <div class="modal-box">
+    <h2>Gruppe beitreten</h2>
+
+    <label for="groupCode">Code eingeben</label>
+    <input
+      id="groupCode"
+      type="text"
+      [(ngModel)]="code"
+      placeholder="XXXX-XXXX"
+    />
+
+    <div class="button-row">
+      <button class="btn join" (click)="onConfirm()">Beitreten</button>
+      <button class="btn cancel" (click)="onCancel()">Abbrechen</button>
+    </div>
+  </div>
+</div>

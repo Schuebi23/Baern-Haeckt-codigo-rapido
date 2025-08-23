@@ -1,5 +1,25 @@
-<p>Test</p>
+<div class="container">
+  <div class="button-row">
+    <button class="btn create">Gruppe erstellen</button>
+    <button class="btn join" (click)="openModal()">Gruppe beitreten</button>
+  </div>
 
-@for (group of store.groups(); track group.id) {
-  <div>{{ group.name }}</div>
-}
+  @if (showModal) {
+    <app-group-join-modal
+      (confirm)="onConfirm($event)"
+      (cancel)="onCancel()"
+    ></app-group-join-modal>
+  }
+
+  <div class="group-list">
+    @for (group of [
+      { name: 'Familie' },
+      { name: 'Freunde' },
+      { name: 'Kollegen' }
+    ]; track $index) {
+      <div class="group-item">
+        <div>{{ group.name }}</div>
+      </div>
+    }
+  </div>
+</div>

@@ -65,16 +65,10 @@ export class GroupComponent implements OnInit {
   }
 
   confirmCommit(): void {
-    if (this.selectedItem && this.commitAmount > 0) {
+    if (this.selectedItem) {
       this.store.createOrUpdateCommit(this.selectedItem.id, this.commitAmount);
       this.closeCommitModal();
     }
-  }
-
-  onCommitAmountChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const value = parseInt(target.value, 10);
-    this.commitAmount = isNaN(value) || value < 1 ? 1 : value;
   }
 
   openRequestModal(item: Item): void {
@@ -90,15 +84,9 @@ export class GroupComponent implements OnInit {
   }
 
   confirmRequest(): void {
-    if (this.selectedItem && this.requestAmount > 0) {
+    if (this.selectedItem) {
       this.store.createOrUpdateRequest(this.selectedItem.id, this.requestAmount);
       this.closeRequestModal();
     }
-  }
-
-  onRequestAmountChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const value = parseInt(target.value, 10);
-    this.requestAmount = isNaN(value) || value < 1 ? 1 : value;
   }
 }

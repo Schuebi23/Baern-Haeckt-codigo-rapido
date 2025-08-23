@@ -230,6 +230,16 @@ export class GroupStore extends signalStore(
 
           return Array.from(memberDataMap.values());
         },
+        hasMemberRequest: (item: Item): boolean => {
+          const request = findRequestByItemAndMember(item, store.memberId());
+
+          return !!request;
+        },
+        hasMemberCommit: (item: Item): boolean => {
+          const commit = findCommitByItemAndMember(item, store.memberId());
+
+          return !!commit;
+        },
       };
     }),
 ) {

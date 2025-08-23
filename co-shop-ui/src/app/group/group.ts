@@ -2,7 +2,7 @@ export type Item = {
   id: number;
   name?: string;
   description?: string;
-  unit: Unit;
+  unit: string;
   requests: ItemRequest[];
   commits: Commit[];
   product?: Product;
@@ -11,14 +11,8 @@ export type Item = {
 export type ItemCreate = {
   name: string;
   productId?: number;
-  unit: Unit;
+  unit: string;
   description?: string;
-}
-
-export enum Unit {
-  PIECE = 'PIECE',
-  KG = 'KG',
-  L = 'L'
 }
 
 export type ItemRequest = {
@@ -41,7 +35,7 @@ export type Commit = {
 export type Product = {
   id: number;
   name: string;
-  unit: Unit;
+  unit: string;
 }
 
 export type Member = {

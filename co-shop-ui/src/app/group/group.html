@@ -26,11 +26,11 @@
             </div>
           </div>
           <div class="item-actions">
-            <button class="action-button request-button" (click)="$event.stopPropagation(); openRequestModal(item)">
-              <span class="star-icon"></span>
-            </button>
             <button class="action-button commit-button" (click)="$event.stopPropagation(); openCommitModal(item)">
               <span class="commit-icon"></span>
+            </button>
+            <button class="action-button request-button" (click)="$event.stopPropagation(); openRequestModal(item)">
+              <span class="star-icon"></span>
             </button>
             <div class="quantity-display">
               {{ store.getTotalCommitsForItem(item.id) }} / {{ store.getTotalRequestsForItem(item.id) }}
@@ -87,11 +87,9 @@
           <div class="input-wrapper">
             <input
               type="number"
-              min="1"
-              [value]="commitAmount"
-              (input)="onCommitAmountChange($event)"
+              name="commitAmount"
+              [(ngModel)]="commitAmount"
               class="form-input"
-              placeholder="1"
               required
             >
             <span class="input-suffix">{{ selectedItem.unit }}</span>
@@ -103,7 +101,7 @@
             Abbrechen
           </button>
           <button type="submit" class="btn btn-primary">
-            Hinzufügen
+            {{ store.hasMemberCommit(selectedItem) ? 'Übernehmen' : 'Hinzufügen' }}
           </button>
         </div>
       </form>
@@ -138,11 +136,9 @@
           <div class="input-wrapper">
             <input
               type="number"
-              min="1"
-              [value]="requestAmount"
-              (input)="onRequestAmountChange($event)"
+              name="requestAmount"
+              [(ngModel)]="requestAmount"
               class="form-input"
-              placeholder="1"
               required
             >
             <span class="input-suffix">{{ selectedItem.unit }}</span>
@@ -154,7 +150,7 @@
             Abbrechen
           </button>
           <button type="submit" class="btn btn-primary">
-            Hinzufügen
+            {{ store.hasMemberRequest(selectedItem) ? 'Übernehmen' : 'Hinzufügen' }}
           </button>
         </div>
       </form>

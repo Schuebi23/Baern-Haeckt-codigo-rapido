@@ -4,6 +4,8 @@ import codigorapido.coshopcore.model.Commit;
 import codigorapido.coshopcore.model.Item;
 import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.model.Request;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -99,13 +101,15 @@ public class SettlementService {
             var debtor = debtors.get(j);
 
             double amount = Math.min(creditor.getValue(), -debtor.getValue());
+            // round to 2 decimal places
+            var amountRounded = BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP).doubleValue();
 
             String creditorName = members.stream().filter(m -> m.getId().equals(creditor.getKey()))
                 .findFirst().map(Member::getDisplayName).orElse("Unknown");
             String debtorName = members.stream().filter(m -> m.getId().equals(debtor.getKey()))
                 .findFirst().map(Member::getDisplayName).orElse("Unknown");
 
-            transactions.add(debtorName + " zahlt " + amount + " CHF an " + creditorName);
+            transactions.add(debtorName + " zahlt " + amountRounded + " CHF an " + creditorName);
 
             // Update balances
             creditor.setValue(creditor.getValue() - amount);

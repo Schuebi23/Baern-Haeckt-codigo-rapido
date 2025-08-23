@@ -1,10 +1,13 @@
 package codigorapido.coshopcore.service;
 
+import codigorapido.coshopcore.entity.ItemEntity;
 import codigorapido.coshopcore.entity.RequestEntity;
+import codigorapido.coshopcore.model.Request;
 import codigorapido.coshopcore.model.RequestCreate;
 import codigorapido.coshopcore.model.RequestUpdate;
 import codigorapido.coshopcore.repository.ItemRepository;
 import codigorapido.coshopcore.repository.RequestRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +22,17 @@ public class RequestService {
         var itemEntity = itemRepository.getReferenceById(requestCreate.getItemId());
 
         RequestEntity requestEntity = RequestEntity.builder()
-                .item(itemEntity)
-                .quantity(requestCreate.getQtyRequested())
-                .forEveryone(requestCreate.getForEveryone())
-                .build();
+            .item(itemEntity)
+            .quantity(requestCreate.getQtyRequested())
+            .forEveryone(requestCreate.getForEveryone())
+            .build();
 
         return requestRepository.save(requestEntity);
     }
 
     public RequestEntity getRequest(Long requestId) {
         return requestRepository.findById(requestId)
-                .orElseThrow(() -> new IllegalArgumentException("Request not found with id: " + requestId));
+            .orElseThrow(() -> new IllegalArgumentException("Request not found with id: " + requestId));
     }
 
     public void deleteRequest(Long requestId) {
@@ -38,12 +41,24 @@ public class RequestService {
 
     public RequestEntity updateRequest(Long requestId, RequestUpdate requestUpdate) {
         var requestEntity = requestRepository.findById(requestId)
-                .orElseThrow(() -> new IllegalArgumentException("Request not found with id: " + requestId));
+            .orElseThrow(() -> new IllegalArgumentException("Request not found with id: " + requestId));
 
         if (requestUpdate.getQtyRequested() != null) {
             requestEntity.setQuantity(requestUpdate.getQtyRequested());
         }
 
-       return requestRepository.save(requestEntity);
+        return requestRepository.save(requestEntity);
+    }
+
+    public List<Request> findRequestsByItem(ItemEntity item) {
+        var requests = requestRepository.findAllByItem(item);
+
+        return requests.stream().map(requestEntity -> new Request()
+            .id(requestEntity.getId())
+            .itemId(requestEntity.getItem().getId())
+            .memberId(requestEntity.getMember().getId())
+            .qtyRequested(requestEntity.getQuantity())
+            .forEveryone(requestEntity.isForEveryone())
+        ).toList();
     }
 }

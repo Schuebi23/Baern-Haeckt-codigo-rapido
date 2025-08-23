@@ -27,7 +27,7 @@ tags:
   - name: Commits
   - name: Requests
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 components:
   securitySchemes:
     bearerAuth:
@@ -283,13 +283,13 @@ components:
           items:
             $ref: '#/components/schemas/Request'
         proposals:
-            type: array
-            items:
-              $ref: '#/components/schemas/Proposal'
+          type: array
+          items:
+            $ref: '#/components/schemas/Proposal'
         commits:
-            type: array
-            items:
-              $ref: '#/components/schemas/Commit'
+          type: array
+          items:
+            $ref: '#/components/schemas/Commit'
     ItemCreate:
       type: object
       required:
@@ -435,15 +435,11 @@ components:
       type: object
       required:
         - id
-        - groupId
         - memberId
-        - productId
+        - itemId
         - qtyRequested
       properties:
         id:
-          type: integer
-          format: int64
-        groupId:
           type: integer
           format: int64
         memberId:
@@ -456,12 +452,9 @@ components:
           type: integer
           format: int64
           example: 1
-        unitPreference:
-          type: string
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
+        forEveryone:
+          type: boolean
+          default: false
     RequestCreate:
       type: object
       required:
@@ -478,8 +471,6 @@ components:
         qtyRequested:
           type: integer
           format: int64
-        unitPreference:
-          type: string
         forEveryone:
           type: boolean
           default: false
@@ -489,8 +480,9 @@ components:
         qtyRequested:
           type: integer
           format: int64
-        unitPreference:
-          type: string
+        forEveryone:
+          type: boolean
+          default: false
 paths:
   /groups:
     get:

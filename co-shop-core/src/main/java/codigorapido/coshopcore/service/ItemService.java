@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+
     private final GroupService groupService;
+    private final ProductService productService;
     private final CommitService commitService;
     private final ProposalService proposalService;
-    private final ProductService productService;
+    private final RequestService requestService;
 
     public List<Item> listGroupItems(Long groupId) {
         var group = groupService.getGroupById(groupId).orElseThrow();
@@ -26,7 +28,7 @@ public class ItemService {
 
         return items.stream().map(itemEntity -> {
             var commits = commitService.findCommitsByItem(itemEntity);
-            //var requests = requestService.findRequestsByItem(itemEntity);
+            var requests = requestService.findRequestsByItem(itemEntity);
             var proposals = proposalService.findProposalsByItem(itemEntity);
 
             return new Item()
@@ -36,9 +38,8 @@ public class ItemService {
                 .groupId(groupId)
                 .unit(itemEntity.getUnit())
                 .commits(commits)
-                .proposals(proposals);
-            // TODO: get requests for the item
-            //.requests(requests.size())
+                .proposals(proposals)
+            .requests(requests);
         }).toList();
     }
 

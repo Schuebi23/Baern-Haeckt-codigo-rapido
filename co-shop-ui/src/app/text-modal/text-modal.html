@@ -1,0 +1,17 @@
+<div class="modal-overlay">
+  <div class="modal-box">
+    <h2>{{ config().title }}</h2>
+
+    <label for="text">{{ config().label }}</label>
+    <input
+      id="text"
+      type="text"
+      [(ngModel)]="text"
+    />
+
+    <div class="button-row">
+      <button class="btn join" (click)="onConfirm()">{{ config().confirmText }}</button>
+      <button class="btn cancel" (click)="onCancel()">Abbrechen</button>
+    </div>
+  </div>
+</div>

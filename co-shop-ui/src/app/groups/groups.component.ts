@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {GroupsStore} from './groups.store';
-import {GroupJoinModalComponent} from '../group-join-modal/group-join-modal.component';
+import {TextModalComponent} from '../text-modal/text-modal.component';
 
 @Component({
   selector: 'app-groups',
@@ -8,27 +8,28 @@ import {GroupJoinModalComponent} from '../group-join-modal/group-join-modal.comp
   styleUrls: ['./groups.css'],
   providers: [GroupsStore],
   imports: [
-    GroupJoinModalComponent
+    TextModalComponent
   ]
 })
 export class GroupsComponent {
   readonly store = inject(GroupsStore);
-  showModal = false;
+  openedModal: 'join' | 'create' | null = null;
 
   constructor() {
     this.store.loadFromServer();
   }
 
-  openModal() {
-    this.showModal = true;
+  createGroup(name: string) {
+    console.log('Name:', name);
+    this.closeModal();
   }
 
-  onConfirm(code: string) {
+  joinGroup(code: string) {
     console.log('Code:', code);
-    this.showModal = false;
+    this.closeModal();
   }
 
-  onCancel() {
-    this.showModal = false;
+  closeModal() {
+    this.openedModal = null;
   }
 }

@@ -1,14 +1,33 @@
 <div class="container">
   <div class="button-row">
-    <button class="btn create">Gruppe erstellen</button>
-    <button class="btn join" (click)="openModal()">Gruppe beitreten</button>
+    <button class="btn create" (click)="openedModal = 'create'">Gruppe erstellen</button>
+    <button class="btn join" (click)="openedModal = 'join'">Gruppe beitreten</button>
   </div>
 
-  @if (showModal) {
-    <app-group-join-modal
-      (confirm)="onConfirm($event)"
-      (cancel)="onCancel()"
-    ></app-group-join-modal>
+  @switch (openedModal) {
+    @case ('create'){
+      <app-text-modal
+        (confirm)="createGroup($event)"
+        (cancel)="closeModal()"
+        [config]="{
+          title: 'Gruppe erstellen',
+          label: 'Gruppenname',
+          confirmText: 'Erstellen'
+        }"
+      ></app-text-modal>
+    }
+    @case ('join'){
+      <app-text-modal
+        (confirm)="joinGroup($event)"
+        (cancel)="closeModal()"
+        [config]="{
+          title: 'Gruppe beitreten',
+          label: 'Code eingeben',
+          confirmText: 'Beitreten'
+        }"
+      ></app-text-modal>
+    }
+    @default {}
   }
 
   <div class="group-list">

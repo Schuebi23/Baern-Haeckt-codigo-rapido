@@ -19,7 +19,6 @@ servers:
   - url: http://localhost:8080/v1
     description: Local Dev
 tags:
-  - name: Auth
   - name: Groups
   - name: Members
   - name: Products
@@ -27,7 +26,6 @@ tags:
   - name: Proposals
   - name: Commits
   - name: Requests
-  - name: Compute
 security:
   - bearerAuth: []
 components:
@@ -307,7 +305,7 @@ components:
           type: string
         packSize:
           type: number
-        notes:
+        description:
           type: string
     ItemUpdate:
       type: object
@@ -320,14 +318,14 @@ components:
           type: string
         packSize:
           type: number
-        notes:
+        description:
           type: string
     Proposal:
       type: object
       required:
         - id
         - groupId
-        - productId
+        - itemId
         - proposerId
         - baseQty
       properties:
@@ -337,7 +335,7 @@ components:
         groupId:
           type: integer
           format: int64
-        productId:
+        itemId:
           type: integer
           format: int64
         proposerId:
@@ -352,7 +350,7 @@ components:
         perDay:
           type: boolean
           default: true
-        notes:
+        description:
           type: string
         createdAt:
           type: string
@@ -361,14 +359,14 @@ components:
       type: object
       required:
         - groupId
-        - productId
+        - itemId
         - proposerId
         - baseQty
       properties:
         groupId:
           type: integer
           format: int64
-        productId:
+        itemId:
           type: integer
           format: int64
         proposerId:
@@ -380,7 +378,7 @@ components:
           type: boolean
         perDay:
           type: boolean
-        notes:
+        description:
           type: string
     ProposalUpdate:
       type: object
@@ -391,7 +389,7 @@ components:
           type: boolean
         perDay:
           type: boolean
-        notes:
+        description:
           type: string
     Commit:
       type: object
@@ -482,19 +480,22 @@ components:
       type: object
       required:
         - memberId
-        - productId
+        - itemId
         - qtyRequested
       properties:
         memberId:
           type: integer
           format: int64
-        productId:
+        itemId:
           type: integer
           format: int64
         qtyRequested:
           type: number
         unitPreference:
           type: string
+        forEveryone:
+          type: boolean
+          default: false
     RequestUpdate:
       type: object
       properties:

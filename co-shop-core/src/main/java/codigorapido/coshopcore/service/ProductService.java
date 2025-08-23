@@ -25,6 +25,13 @@ public class ProductService {
     }
 
     public Optional<List<Product>> findByName(String name) {
+        if (name == null || name.isBlank()) {
+            return Optional.of(productRepository.findAll()
+                    .stream()
+                    .map(entityToDtoConverter::convert)
+                    .toList());
+        }
+
         return Optional.of(productRepository.findByNameContainingIgnoreCase(name)
                 .stream()
                 .map(entityToDtoConverter::convert)
@@ -41,8 +48,8 @@ public class ProductService {
         return entityToDtoConverter.convert(savedEntity);
     }
 
-    public Product update(ProductUpdate productUpdate) {
-        var productEntity = productRepository.findById(productUpdate.getId()).orElseThrow();
+    public Product update(ProductUpdate productUpdate, Long productId) {
+        var productEntity = productRepository.findById(productId).orElseThrow();
         productEntity.setName(productUpdate.getName());
         productEntity.setUnit(productUpdate.getUnit());
         var updatedEntity = productRepository.save(productEntity);

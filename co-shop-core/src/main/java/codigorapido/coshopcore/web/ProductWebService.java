@@ -18,6 +18,11 @@ public class ProductWebService implements ProductsApi {
     private final ProductService productService;
 
     @Override
+    public ResponseEntity<Product> getProduct(Long productId){
+        return ResponseEntity.ok(productService.findById(productId).orElseThrow());
+    }
+
+    @Override
     public ResponseEntity<List<Product>> listProducts(String name) {
         return ResponseEntity.ok(productService.findByName(name).orElseThrow());
     }
@@ -35,6 +40,6 @@ public class ProductWebService implements ProductsApi {
 
     @Override
     public ResponseEntity<Product> updateProduct(Long productId, ProductUpdate productUpdate){
-        return ResponseEntity.ok(productService.update(productUpdate));
+        return ResponseEntity.ok(productService.update(productUpdate, productId));
     }
 }

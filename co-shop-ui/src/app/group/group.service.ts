@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 
-import {Item} from './group';
+import {Group, Item, Member} from './group';
 
 @Injectable({providedIn: 'root'})
 export class GroupService {
@@ -12,7 +12,6 @@ export class GroupService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
-  /** GET /groups — List groups */
   async loadItems(groupId: number): Promise<Item[]> {
     return await firstValueFrom(
         this.httpClient.get<Item[]>(`${this.baseUrl}/items/${groupId}`, {}),
@@ -20,9 +19,20 @@ export class GroupService {
   }
 
   async createItem(item: Item): Promise<Item> {
-    const headers = new HttpHeaders({Accept: 'application/json'});
     return await firstValueFrom(
-        this.httpClient.post<Item>(`${this.baseUrl}/items`, item, {headers}),
+        this.httpClient.post<Item>(`${this.baseUrl}/items`, item, {}),
+    );
+  }
+
+  async loadGroup(groupId: number): Promise<Group> {
+    return await firstValueFrom(
+        this.httpClient.get<Group>(`${this.baseUrl}/groups/${groupId}`, {}),
+    );
+  }
+
+  async loadMembers(groupId: number): Promise<Member[]> {
+    return await firstValueFrom(
+        this.httpClient.get<Member[]>(`${this.baseUrl}/groups/${groupId}/members`, {}),
     );
   }
 }

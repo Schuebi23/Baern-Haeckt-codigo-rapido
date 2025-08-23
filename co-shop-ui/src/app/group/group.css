@@ -43,28 +43,58 @@
   min-height: 400px;
 }
 
-.item {
+.item-wrapper {
   background: white;
   border-bottom: 1px solid #e5e5ea;
+}
+
+.item-wrapper:last-child {
+  border-bottom: none;
+}
+
+.item {
   padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 
 .item:hover {
   background-color: #f8f8f8;
 }
 
-.item:last-child {
-  border-bottom: none;
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
 }
 
 .item-name {
   font-size: 18px;
   font-weight: 500;
   color: #1c1c1e;
+}
+
+.expand-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.chevron {
+  font-size: 16px;
+  color: #8e8e93;
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+}
+
+.expand-indicator.expanded .chevron {
+  transform: rotate(90deg);
 }
 
 .item-actions {
@@ -115,6 +145,61 @@
   margin-left: 8px;
   min-width: 60px;
   text-align: right;
+}
+
+/* Collapsible requests section */
+.requests-section {
+  background-color: #f8f8f9;
+  border-top: 1px solid #e5e5ea;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+  }
+}
+
+.request-item {
+  padding: 12px 20px 12px 40px;
+  border-bottom: 1px solid #e5e5ea;
+  background-color: #f8f8f9;
+}
+
+.request-item:last-child {
+  border-bottom: none;
+}
+
+.request-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.request-member {
+  font-weight: 500;
+  color: #1c1c1e;
+  min-width: 80px;
+}
+
+.request-quantity {
+  color: #007aff;
+  font-weight: 600;
+}
+
+.for-everyone-tag {
+  background-color: #34c759;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 /* Icons using CSS */

@@ -109,6 +109,7 @@ INSERT INTO REQUESTS (FK_ITEM, FK_MEMBER, QUANTITY, FOR_EVERYONE)
 VALUES
 -- Family Smith requests
 (1, 1, 2, true),   -- Sarah requests bread for family
+(1, 4, 2, true),   -- Sarah requests bread for family
 (2, 4, 3, true),   -- David requests milk for family
 (3, 5, 2, false),  -- Emma requests eggs
 (4, 7, 2, true),   -- Anna requests chicken for family

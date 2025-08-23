@@ -34,3 +34,15 @@ export type Product = {
   name: string;
   unit: Unit;
 }
+
+export type Member = {
+  id: number;
+  displayName: string;
+}
+
+export type Group = {
+  id: number;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+}

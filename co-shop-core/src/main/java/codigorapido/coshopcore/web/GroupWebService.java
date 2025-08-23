@@ -18,15 +18,8 @@ public class GroupWebService implements GroupsApi {
 
     @Override
     public ResponseEntity<Group> createGroup(GroupCreate groupCreate) {
-        var savedGroup = groupService.createGroup(groupCreate);
-
-        var group = new Group()
-            .id(savedGroup.getId())
-            .name(savedGroup.getName())
-            .startDate(savedGroup.getStartDate())
-            .endDate(savedGroup.getEndDate())
-            .inviteCode("INVITE123"); // Placeholder for invite code logic
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        var group = groupService.createGroup(groupCreate);
+        return new ResponseEntity<>(group, HttpStatus.CREATED);
     }
 
     @Override
@@ -35,13 +28,7 @@ public class GroupWebService implements GroupsApi {
         if (optionalGroup.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            var groupEntity = optionalGroup.get();
-            var group = new Group()
-                .id(groupEntity.getId())
-                .name(groupEntity.getName())
-                .startDate(groupEntity.getStartDate())
-                .endDate(groupEntity.getEndDate())
-                .inviteCode("INVITE123"); // Placeholder for invite code logic
+            var group = optionalGroup.get();
             return new ResponseEntity<>(group, HttpStatus.OK);
         }
     }

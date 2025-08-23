@@ -70,24 +70,6 @@ body {
   letter-spacing: -0.5px;
 }
 
-.add-button {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-size: 24px;
-  font-weight: 300;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  backdrop-filter: blur(10px);
-}
-
 .add-button:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: scale(1.05);
@@ -178,20 +160,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Arrow positioned before the text */
-.expand-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
-  background-color: #f2f2f7;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  order: -1; /* Move arrow to the beginning */
 }
 
 .chevron {
@@ -748,4 +716,54 @@ body {
 
 .bg-red {
   background-color: #ff453a;
+}
+
+/* Fix for the plus button centering */
+.add-button {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 24px;
+  font-weight: 300;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  /* Add line-height to ensure proper vertical centering */
+  line-height: 1;
+}
+
+/* Fix for the expand indicator (arrow) centering */
+.expand-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background-color: #f2f2f7;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  order: -1;
+  /* Ensure the chevron is properly centered */
+  text-align: center;
+}
+
+.chevron {
+  font-size: 14px;
+  color: #8e8e93;
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
+  /* Add line-height to ensure proper centering */
+  line-height: 1;
+  /* Center the chevron character */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -324,7 +324,7 @@ body {
 /* Responsive Utilities */
 @media (max-width: 480px) {
   body {
-    padding: var(--spacing-md);
+    padding: 0;
   }
 
   .container {

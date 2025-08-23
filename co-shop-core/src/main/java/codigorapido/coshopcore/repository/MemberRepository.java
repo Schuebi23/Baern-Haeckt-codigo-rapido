@@ -2,10 +2,13 @@ package codigorapido.coshopcore.repository;
 
 import codigorapido.coshopcore.entity.GroupEntity;
 import codigorapido.coshopcore.entity.MemberEntity;
+import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
+    List<MemberEntity> findAllByGroups(Set<GroupEntity> groups);
 }

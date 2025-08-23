@@ -105,6 +105,19 @@
           </div>
         </div>
 
+        <div class="form-field">
+          <label>Preis</label>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              name="price"
+              [(ngModel)]="price"
+              class="form-input"
+              required
+            >
+          </div>
+        </div>
+
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" (click)="closeCommitModal()">
             Abbrechen
@@ -152,6 +165,19 @@
             >
             <span class="input-suffix">{{ selectedItem.unit }}</span>
           </div>
+        </div>
+
+        <div class="form-field">
+          <div class="checkbox-wrapper" (click)="forEveryone = !forEveryone">
+            <div class="custom-checkbox" [class.checked]="forEveryone"></div>
+            <span>Artikel ist für alle Gruppenmitglieder</span>
+          </div>
+          <input
+            type="checkbox"
+            name="forEveryone"
+            [(ngModel)]="forEveryone"
+            style="display: none;"
+          >
         </div>
 
         <div class="form-actions">

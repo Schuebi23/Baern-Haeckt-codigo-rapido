@@ -584,3 +584,56 @@ body {
     padding: 14px 16px;
   }
 }
+
+/* Add these styles to your existing CSS file */
+
+/* Checkbox specific styles */
+.form-input[type="checkbox"] {
+  width: auto;
+  height: 20px;
+  min-width: 20px;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #007aff;
+  transform: scale(1.2);
+}
+
+.form-input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+/* Alternative custom checkbox styles (more control over appearance) */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e8e8ed;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-checkbox.checked {
+  background: #007aff;
+  border-color: #007aff;
+}
+
+.custom-checkbox.checked::after {
+  content: '✓';
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}

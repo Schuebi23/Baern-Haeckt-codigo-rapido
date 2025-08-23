@@ -30,13 +30,13 @@ export class GroupService {
     );
   }
 
-  async createCommit(itemId: number, commitAmount: number, memberId: number): Promise<Commit> {
+  async createCommit(itemId: number, commitAmount: number, memberId: number, price: number): Promise<Commit> {
     return await firstValueFrom(
         this.httpClient.post<Commit>(`${this.baseUrl}/commits`, {
           'memberId': memberId,
           'itemId': itemId,
           'qtyCommitted': commitAmount,
-          'price': 0,
+          'price': price,
           'commited': false,
         }, {}),
     );

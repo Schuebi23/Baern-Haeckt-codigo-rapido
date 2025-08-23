@@ -25,7 +25,9 @@ export class GroupComponent implements OnInit {
   isRequestModalOpen = false;
   selectedItem: Item | undefined = undefined;
   commitAmount = 0;
+  price = 0.0;
   requestAmount = 0;
+  forEveryone = false;
 
   constructor() {
   }
@@ -54,7 +56,11 @@ export class GroupComponent implements OnInit {
 
   openCommitModal(item: Item): void {
     this.selectedItem = item;
-    this.commitAmount = this.store.getCurrentCommitAmount(item); // Reset to default
+    const currentCommit = this.store.getCurrentCommit(item);
+    if (currentCommit) {
+      this.commitAmount = currentCommit.qtyCommitted;
+      this.price = currentCommit.price ? currentCommit.price : 0.0;
+    }
     this.isCommitModalOpen = true;
   }
 
@@ -66,14 +72,16 @@ export class GroupComponent implements OnInit {
 
   confirmCommit(): void {
     if (this.selectedItem) {
-      this.store.createOrUpdateCommit(this.selectedItem.id, this.commitAmount);
+      this.store.createOrUpdateCommit(this.selectedItem.id, this.commitAmount, this.price);
       this.closeCommitModal();
     }
   }
 
   openRequestModal(item: Item): void {
     this.selectedItem = item;
-    this.requestAmount= this.store.getCurrentRequestAmount(item); // Reset to default
+    const currentRequest = this.store.getCurrentRequest(item); // Reset to default
+    this.requestAmount = currentRequest ? currentRequest.qtyRequested : 0;
+    this.forEveryone = currentRequest ? currentRequest.forEveryone : false;
     this.isRequestModalOpen = true;
   }
 
@@ -85,7 +93,7 @@ export class GroupComponent implements OnInit {
 
   confirmRequest(): void {
     if (this.selectedItem) {
-      this.store.createOrUpdateRequest(this.selectedItem.id, this.requestAmount);
+      this.store.createOrUpdateRequest(this.selectedItem.id, this.requestAmount, this.forEveryone);
       this.closeRequestModal();
     }
   }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {firstValueFrom, Observable} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class GroupsService {
@@ -14,7 +14,14 @@ export class GroupsService {
   async listGroups(): Promise<Group[]> {
     const headers = new HttpHeaders({ Accept: 'application/json' });
     return await firstValueFrom(
-      this.http.get<Group[]>(`${this.baseUrl}/groups`, { headers })
+      this.http.get<Group[]>(`${this.baseUrl}/members/1/groups`, { headers })
+    );
+  }
+
+  async createGroup(name: string): Promise<void> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    await firstValueFrom(
+      this.http.post<void>(`${this.baseUrl}/groups`, { name }, { headers })
     );
   }
 }

@@ -5,5 +5,5 @@ import {GroupComponent} from './group/group.component';
 export const routes: Routes = [
   {path: '', redirectTo: '/groups', pathMatch: 'full'},
   {path: 'groups', component: GroupsComponent},
-  {path: 'group/:groupId/:memberId', component: GroupComponent},
+  {path: 'group/:groupId', component: GroupComponent},
 ];

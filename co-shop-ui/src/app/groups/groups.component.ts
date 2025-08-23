@@ -1,6 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {GroupsStore} from './groups.store';
 import {TextModalComponent} from '../text-modal/text-modal.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-groups',
@@ -15,12 +16,12 @@ export class GroupsComponent {
   readonly store = inject(GroupsStore);
   openedModal: 'join' | 'create' | null = null;
 
-  constructor() {
+  constructor(private router: Router) {
     this.store.loadFromServer();
   }
 
   createGroup(name: string) {
-    console.log('Name:', name);
+    this.store.createGroup(name);
     this.closeModal();
   }
 
@@ -31,5 +32,9 @@ export class GroupsComponent {
 
   closeModal() {
     this.openedModal = null;
+  }
+
+  selectGroup(groupId: number) {
+    this.router.navigate(['groups', groupId]);
   }
 }

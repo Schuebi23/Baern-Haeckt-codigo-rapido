@@ -31,12 +31,8 @@
   }
 
   <div class="group-list">
-    @for (group of [
-      { name: 'Familie' },
-      { name: 'Freunde' },
-      { name: 'Kollegen' }
-    ]; track $index) {
-      <div class="group-item">
+    @for (group of store.groups(); track $index) {
+      <div class="group-item" (click)="selectGroup(group.id)">
         <div>{{ group.name }}</div>
       </div>
     }

@@ -28,6 +28,10 @@ export class GroupsStore extends signalStore(
           patchState(store, {loading: false});
         }
       },
+      createGroup: async (name: string) => {
+        await groupsService.createGroup(name);
+        await groupsService.listGroups();
+      }
     };
   }),
 ) {

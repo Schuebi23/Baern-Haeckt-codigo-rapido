@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 
-import {Commit, Group, Item, Member} from './group';
+import {Commit, Group, Item, ItemRequest, Member} from './group';
 
 @Injectable({providedIn: 'root'})
 export class GroupService {
@@ -54,6 +54,26 @@ export class GroupService {
           'qtyCommitted': newAmount,
           'price': price,
           'commited': commited,
+        }, {}),
+    );
+  }
+
+  async createRequest(itemId: number, requestAmount: number, memberId: number, forEveryone: boolean = false): Promise<ItemRequest> {
+    return await firstValueFrom(
+        this.httpClient.post<ItemRequest>(`${this.baseUrl}/requests`, {
+          'memberId': memberId,
+          'itemId': itemId,
+          'qtyRequested': requestAmount,
+          'forEveryone': forEveryone,
+        }, {}),
+    );
+  }
+
+  async updateRequest(requestId: number, newAmount: number, forEveryone: boolean = false): Promise<ItemRequest> {
+    return await firstValueFrom(
+        this.httpClient.patch<ItemRequest>(`${this.baseUrl}/requests/${requestId}`, {
+          'qtyRequested': newAmount,
+          'forEveryone': forEveryone,
         }, {}),
     );
   }

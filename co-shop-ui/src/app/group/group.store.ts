@@ -65,8 +65,23 @@ export class GroupStore extends signalStore(
           const member = findMemberById(store.members(), memberId);
           return member ? member.displayName : '';
         },
-        getCommitsForItemAndMember: (itemId: number, memberId: number): string => {
+        getCurrentCommitAmount: (currentItem?: Item): number => {
+          if (currentItem) {
+            const commit = findCommitByItemAndMember(currentItem, store.memberId());
+            return commit ? commit.qtyCommitted : 0;
+          }
 
+          return 1;
+        },
+        getCurrentRequestAmount: (currentItem: Item): number => {
+          if (currentItem) {
+            const request = findRequestByItemAndMember(currentItem, store.memberId());
+            return request ? request.qtyRequested : 0;
+          }
+
+          return 1;
+        },
+        getCommitsForItemAndMember: (itemId: number, memberId: number): string => {
           const item = findItemById(store.items(), itemId);
           if (item) {
             const commit = findCommitByItemAndMember(item, memberId);
@@ -100,10 +115,7 @@ export class GroupStore extends signalStore(
           const existingCommit = targetItem.commits.find(c => c.memberId === store.memberId());
 
           if (existingCommit && existingCommit.id) {
-            const updatedCommit = await groupService.updateCommit(
-                existingCommit.id,
-                existingCommit.qtyCommitted + commitAmount,
-            );
+            const updatedCommit = await groupService.updateCommit(existingCommit.id, commitAmount);
 
             const updatedItems = currentItems.map(item => {
               if (item.id === itemId) {
@@ -126,6 +138,48 @@ export class GroupStore extends signalStore(
                 return {
                   ...item,
                   commits: [...item.commits, createdCommit],
+                };
+              }
+              return item;
+            });
+            patchState(store, {items: updatedItems});
+          }
+        },
+        createOrUpdateRequest: async (itemId: number, requestAmount: number): Promise<void> => {
+          const currentItems = store.items();
+          const targetItem = findItemById(currentItems, itemId);
+
+          if (!targetItem) {
+            console.error(`Item with ID ${itemId} not found`);
+            return;
+          }
+
+          const existingRequest = targetItem.requests.find(c => c.memberId === store.memberId());
+
+          if (existingRequest && existingRequest.id) {
+            const updatedRequest = await groupService.updateRequest(existingRequest.id, requestAmount);
+
+            const updatedItems = currentItems.map(item => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  requests: item.requests.map(request =>
+                      request.id === existingRequest.id ? updatedRequest : request,
+                  ),
+                };
+              }
+              return item;
+            });
+
+            patchState(store, {items: updatedItems});
+          } else {
+            const createdRequest = await groupService.createRequest(itemId, requestAmount, store.memberId());
+
+            const updatedItems = currentItems.map(item => {
+              if (item.id === itemId) {
+                return {
+                  ...item,
+                  requests: [...item.requests, createdRequest],
                 };
               }
               return item;

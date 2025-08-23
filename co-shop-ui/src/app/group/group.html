@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="item-actions">
-            <button class="action-button request-button" (click)="$event.stopPropagation()">
+            <button class="action-button request-button" (click)="$event.stopPropagation(); openRequestModal(item)">
               <span class="star-icon"></span>
             </button>
             <button class="action-button commit-button" (click)="$event.stopPropagation(); openCommitModal(item)">
@@ -61,12 +61,12 @@
 </div>
 
 <!-- Commit Modal -->
-@if (isModalOpen && selectedItem) {
-  <div class="modal-overlay" (click)="closeModal()">
+@if (isCommitModalOpen && selectedItem) {
+  <div class="modal-overlay" (click)="closeCommitModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Artikel hinzufügen</h2>
-        <button class="close-button" (click)="closeModal()">×</button>
+        <button class="close-button" (click)="closeCommitModal()">×</button>
       </div>
 
       <form class="commit-form" (ngSubmit)="confirmCommit()">
@@ -89,7 +89,7 @@
               type="number"
               min="1"
               [value]="commitAmount"
-              (input)="onAmountChange($event)"
+              (input)="onCommitAmountChange($event)"
               class="form-input"
               placeholder="1"
               required
@@ -99,7 +99,7 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          <button type="button" class="btn btn-secondary" (click)="closeCommitModal()">
             Abbrechen
           </button>
           <button type="submit" class="btn btn-primary">
@@ -110,3 +110,55 @@
     </div>
   </div>
 }
+
+<!-- Request Modal -->
+@if (isRequestModalOpen && selectedItem) {
+  <div class="modal-overlay" (click)="closeRequestModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Artikel hinzufügen</h2>
+        <button class="close-button" (click)="closeRequestModal()">×</button>
+      </div>
+
+      <form class="commit-form" (ngSubmit)="confirmRequest()">
+        <div class="form-field">
+          <label>Artikel</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              [value]="selectedItem.name"
+              readonly
+              class="form-input readonly"
+            >
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Anzahl</label>
+          <div class="input-wrapper">
+            <input
+              type="number"
+              min="1"
+              [value]="requestAmount"
+              (input)="onRequestAmountChange($event)"
+              class="form-input"
+              placeholder="1"
+              required
+            >
+            <span class="input-suffix">{{ selectedItem.unit }}</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeRequestModal()">
+            Abbrechen
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Hinzufügen
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

@@ -18,6 +18,7 @@ export class GroupsComponent {
 
   constructor(private router: Router) {
     this.store.loadFromServer();
+    this.store.setUserId(1); // Temporary user ID
   }
 
   createGroup(name: string) {

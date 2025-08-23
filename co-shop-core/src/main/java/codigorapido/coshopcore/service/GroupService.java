@@ -3,11 +3,14 @@ package codigorapido.coshopcore.service;
 import codigorapido.coshopcore.entity.GroupEntity;
 import codigorapido.coshopcore.entity.converter.GroupCreateToEntityConverter;
 import codigorapido.coshopcore.entity.converter.GroupEntityToDtoConverter;
+import codigorapido.coshopcore.entity.converter.MemberEntityToDtoConverter;
 import codigorapido.coshopcore.model.Group;
 import codigorapido.coshopcore.model.GroupCreate;
 import codigorapido.coshopcore.model.JoinGroupRequest;
+import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.repository.GroupRepository;
 import codigorapido.coshopcore.repository.MemberRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ public class GroupService {
     private final GroupCreateToEntityConverter toEntityConverter;
 
     private final GroupEntityToDtoConverter toDtoConverter = new GroupEntityToDtoConverter();
+
+    private final MemberEntityToDtoConverter memberToDtoConverter = new MemberEntityToDtoConverter();
 
     public Group createGroup(GroupCreate groupCreate) {
         GroupEntity groupEntity = toEntityConverter.convert(groupCreate);
@@ -39,5 +44,10 @@ public class GroupService {
 
         group.getMembers().add(member);
         groupRepository.save(group);
+    }
+
+    public List<Member> listGroupMembers(Long groupId) {
+        var group = groupRepository.findById(groupId).orElseThrow();
+        return memberToDtoConverter.convert(group.getMembers());
     }
 }

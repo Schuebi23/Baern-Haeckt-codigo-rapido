@@ -5,7 +5,9 @@ import codigorapido.coshopcore.api.GroupsApi;
 import codigorapido.coshopcore.model.Group;
 import codigorapido.coshopcore.model.GroupCreate;
 import codigorapido.coshopcore.model.JoinGroupRequest;
+import codigorapido.coshopcore.model.Member;
 import codigorapido.coshopcore.service.GroupService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +40,11 @@ public class GroupWebService implements GroupsApi {
     public ResponseEntity<Void> joinGroup(JoinGroupRequest joinGroupRequest) {
         groupService.addMemberToGroup(joinGroupRequest);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Member>> listGroupMembers(Long groupId) {
+        var members = groupService.listGroupMembers(groupId);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
 }

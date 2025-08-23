@@ -464,11 +464,12 @@ components:
         memberId:
           type: integer
           format: int64
-        productId:
+        itemId:
           type: integer
           format: int64
         qtyRequested:
-          type: number
+          type: integer
+          format: int64
           example: 1
         unitPreference:
           type: string
@@ -490,7 +491,8 @@ components:
           type: integer
           format: int64
         qtyRequested:
-          type: number
+          type: integer
+          format: int64
         unitPreference:
           type: string
         forEveryone:
@@ -500,7 +502,8 @@ components:
       type: object
       properties:
         qtyRequested:
-          type: number
+          type: integer
+          format: int64
         unitPreference:
           type: string
 paths:

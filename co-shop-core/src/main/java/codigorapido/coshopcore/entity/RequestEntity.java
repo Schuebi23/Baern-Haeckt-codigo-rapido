@@ -34,7 +34,7 @@ public class RequestEntity {
     private MemberEntity member;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private Long quantity;
 
     @Column(name = "for_everyone", nullable = false)
     @Builder.Default

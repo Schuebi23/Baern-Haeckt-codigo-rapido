@@ -824,8 +824,6 @@ paths:
       tags:
         - Requests
       summary: Create a request
-      parameters:
-        - $ref: '#/components/parameters/GroupIdParam'
       requestBody:
         required: true
         content:

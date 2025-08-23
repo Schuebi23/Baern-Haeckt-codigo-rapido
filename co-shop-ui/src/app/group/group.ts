@@ -13,6 +13,7 @@ export type ItemCreate = {
   productId?: number;
   unit: string;
   description?: string;
+  menge: number;
 }
 
 export type ItemRequest = {

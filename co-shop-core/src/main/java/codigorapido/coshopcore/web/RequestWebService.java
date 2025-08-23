@@ -1,7 +1,6 @@
 package codigorapido.coshopcore.web;
 
 import codigorapido.coshopcore.api.RequestsApi;
-import codigorapido.coshopcore.entity.RequestEntity;
 import codigorapido.coshopcore.model.Request;
 import codigorapido.coshopcore.model.RequestCreate;
 import codigorapido.coshopcore.service.RequestService;
@@ -16,7 +15,7 @@ public class RequestWebService implements RequestsApi {
     private final RequestService requestService;
 
     @Override
-    public ResponseEntity<Request> createRequest(Long groupId, RequestCreate requestCreate) {
+    public ResponseEntity<Request> createRequest(RequestCreate requestCreate) {
         var request = requestService.create(requestCreate);
         return ResponseEntity.ok(request);
     }

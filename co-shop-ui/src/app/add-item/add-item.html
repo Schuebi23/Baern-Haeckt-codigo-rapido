@@ -10,7 +10,7 @@
 
   @let searchResults = searchResults$ | async;
   @for (product of searchResults; track $index) {
-    <div class="result" (click)="addItem()">
+    <div class="result" (click)="addItem(product)">
       {{ product.name }}
     </div>
   }
@@ -18,7 +18,7 @@
   @if (searchResults?.length === 0 && searchControl.value) {
     <div
       class="create-option"
-      (click)="addItem()"
+      (click)="addItem(null)"
     >
       Neues Produkt erstellen: "<strong>{{ searchControl.value }}</strong>"
     </div>
@@ -28,7 +28,8 @@
     <app-add-item-dialog
       (confirm)="onItemCreated($event)"
       (cancel)="createItem = false"
-      [name]="searchControl.value!!"
+      [name]="selectedProduct !== null ? selectedProduct.name : searchControl.value!!"
+      [unit]="selectedProduct !== null ? selectedProduct.unit : ''"
     ></app-add-item-dialog>
   }
 

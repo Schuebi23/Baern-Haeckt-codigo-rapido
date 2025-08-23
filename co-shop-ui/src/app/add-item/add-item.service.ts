@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {ItemCreate} from '../group/group';
+import {Item, ItemCreate, ItemRequest} from '../group/group';
 
 @Injectable({providedIn: 'root'})
 export class AddItemService {
@@ -11,16 +11,23 @@ export class AddItemService {
   constructor(private http: HttpClient) {
   }
 
-  async createItem(groupId: number, item: ItemCreate): Promise<Group[]> {
+  async createItem(groupId: number, item: ItemCreate): Promise<Item> {
     const headers = new HttpHeaders({Accept: 'application/json'});
     return await firstValueFrom(
-      this.http.post<Group[]>(`${this.baseUrl}/items/${groupId}`,
+      this.http.post<Item>(`${this.baseUrl}/items/${groupId}`,
         {
           "name": item.name,
           "productId": item.productId,
           "unit": item.unit,
           "description": item.description,
         }, {headers})
+    );
+  }
+
+  async createRequest(itemRequest: ItemRequest): Promise<ItemRequest> {
+    const headers = new HttpHeaders({Accept: 'application/json'});
+    return await firstValueFrom(
+      this.http.post<ItemRequest>(`${this.baseUrl}/requests`, itemRequest, {headers})
     );
   }
 }

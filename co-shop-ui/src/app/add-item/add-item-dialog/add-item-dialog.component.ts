@@ -1,5 +1,5 @@
-import {Component, Input, output, signal} from '@angular/core';
-import { FormsModule } from '@angular/forms'; // für ngModel
+import {Component, Input, OnInit, output, signal} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-item-dialog',
@@ -8,7 +8,15 @@ import { FormsModule } from '@angular/forms'; // für ngModel
   templateUrl: './add-item-dialog.html',
   styleUrls: ['./add-item-dialog.css']
 })
-export class AddItemDialog {
+export class AddItemDialog implements OnInit {
+  ngOnInit(): void {
+      this.form.set({
+        name: this.name,
+        unit: this.unit,
+        menge: 0,
+        description: ''
+      })
+  }
   // Formularwerte als Signal
   form = signal({
     name: '',
@@ -17,7 +25,8 @@ export class AddItemDialog {
     description: ''
   });
 
-  @Input() name: string = 'name'
+  @Input() name: string = "";
+  @Input() unit: string = "";
 
   confirm = output<any>();
   cancel = output();
@@ -29,6 +38,7 @@ export class AddItemDialog {
       name: formValue.name,
       unit: formValue.unit,
       description: formValue.description || undefined,
+      menge: formValue.menge,
       productId: 0,
     });
   }

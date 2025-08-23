@@ -30,6 +30,11 @@ h3 {
   border: 1px solid #eee;
 }
 
+.result:hover, .create-option:hover {
+  background-color: #f0f8ff;
+  cursor: pointer;
+}
+
 .create-option {
   margin-top: 10px;
   padding: 12px;

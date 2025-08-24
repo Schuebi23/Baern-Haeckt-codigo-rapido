@@ -38,10 +38,10 @@
 - **Frontend:**
     - Angular (UI, State-Management, Kommunikation mit API über REST-Endpunkte)
 - **API:**
-    - OpenAPI/Swagger für API-Spezifikation, Dokumentation und automatische Client/Server-Codegenerierung
+    - OpenAPI/Swagger für API-Spezifikation, Dokumentation und automatische Rest-API Interface Codegenerierung (backendseitig)
 - **Build & Deployment:**
     - Gradle (Backend), npm (Frontend)
-    - Lokale Containerisierung für die DB
+    - Lokale Containerisierung mit Docker Compose für die DB
 
 ---
 
@@ -49,13 +49,12 @@
 
 - **Besonderheiten:**
     - API wurde strikt Spec-First umgesetzt → dadurch konsistente Schnittstellen und einfaches Testing.
-    - Der Einkaufslisten-Workflow ist so aufgebaut, eine möglichst einfach Planung eines Events mit mehreren Personen
+    - Der Einkaufslisten-Workflow ist so aufgebaut, dass eine möglichst einfache Planung eines Events mit mehreren Personen
       erreicht werden kann.
 - **Cooles Feature:**
-    - Die automatische Kategorisierung von Artikeln basierend auf Vorschlägen.
-    - Gerechte Berechnung der Kosten pro Person je nach dem, wer was gekauft oder verlangt hat.
+    - Faire Berechnung der Kosten pro Person je nach dem, wer was gekauft oder verlangt hat.
     - Klare Trennung von Schichten: Backend ist leichtgewichtig, Frontend flexibel erweiterbar.
-    - API lässt sich leicht von anderen Clients (z. B. Mobile App) wiederverwenden.
+    - API lässt sich leicht von anderen Clients (z.B. Mobile App) wiederverwenden.
 
 ---
 
@@ -69,7 +68,7 @@
     - Keine Offline-Funktionalität (Caching, PWA)
     - Keine Mehrsprachigkeit
 - **Offene Punkte:**
-    - Optimierung der Performance bei großen Einkaufslisten (Pagination, Lazy Loading).
+    - Optimierung der Performance bei großen Einkaufslisten (Pagination, Lazy Loading)
     - Deployment (z.B. in einer Cloud-Umgebung wie Azure oder AWS)
 
 ---

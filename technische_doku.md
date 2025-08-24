@@ -11,8 +11,8 @@
 
 - Das Projekt ist auf GitHub
   verfügbar: [Codigo Rapido – Baern-Haeckt](https://github.com/Schuebi23/Baern-Haeckt-codigo-rapido)
-- Der aktuelle Stand umfasst ein funktionierendes Backend (Spring Boot) und ein Angular-Frontend, die über eine
-  PostgreSQL-Datenbank miteinander verbunden sind.
+- Der aktuelle Stand umfasst ein funktionierendes Backend (Spring Boot) und ein Angular-Frontend. Für die Datenbank
+  wird PostgreSQL verwendet. Kommunikation zwischen Frontend und Backend erfolgt über eine REST-API.
 - Die API ist vollständig dokumentiert (OpenAPI/Swagger) und kann direkt getestet werden.
 
 ---
@@ -33,11 +33,10 @@
 ### Technischer Aufbau
 
 - **Backend:**
-    - Spring Boot (REST-API, Dependency Injection, Validation, Swagger Integration)
+    - Spring Boot (REST-API, Swagger UI, JPA/Hibernate für Datenbankzugriff)
     - PostgreSQL (relationale Datenhaltung, einfache Abfragen und Persistenz)
 - **Frontend:**
     - Angular (UI, State-Management, Kommunikation mit API über REST-Endpunkte)
-    - Material Design Komponenten für ein einheitliches Look & Feel
 - **API:**
     - OpenAPI/Swagger für API-Spezifikation, Dokumentation und automatische Client/Server-Codegenerierung
 - **Build & Deployment:**
@@ -54,6 +53,7 @@
       erreicht werden kann.
 - **Cooles Feature:**
     - Die automatische Kategorisierung von Artikeln basierend auf Vorschlägen.
+    - Gerechte Berechnung der Kosten pro Person je nach dem, wer was gekauft oder verlangt hat.
     - Klare Trennung von Schichten: Backend ist leichtgewichtig, Frontend flexibel erweiterbar.
     - API lässt sich leicht von anderen Clients (z. B. Mobile App) wiederverwenden.
 
